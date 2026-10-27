@@ -1,0 +1,450 @@
+/* ==========================================================================
+   EasyPoker‑inspired design system – “Royal Felt” refreshed
+   Colores, tipografía, sombras, radio, animaciones y componentes UI
+   ========================================================================== */
+
+/* ---- 1. Variables globales ------------------------------------------------ */
+:root{
+  /* Paleta principal (EasyPoker: verde tapete, oro, blanco/crema) */
+  --felt:#1b4d3e;               /* tapete verde oscuro */
+  --felt-light:#2d6a4f;         /* zona central algo más clara */
+  --gold:#d4af37;               /* oro principal */
+  --gold-light:#e8c56b;         /* oro hover/activo */
+  --gold-dark:#a67c2e;          /* borde oro */
+  --cream:#f5f0e8;              /* texto/paneles claros */
+  --cream-muted:#aab8a2;        /* texto secundario */
+  --red:#dc2626;                /* corazones/diamantes / error */
+  --red-soft:#ef4444;
+  --black:#0b0e14;
+  --panel:#121722;              /* fondo de paneles (lobby, consola) */
+  --panel-border:rgba(212,175,55,.35);
+
+  /* Tipografía */
+  --font-base:"Manrope",system-ui,sans-serif;
+  --font-heading:"Space Grotesk",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+
+  /* Radio y sombras */
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-xl:24px;
+  --radius-pill:9999px;
+  --shadow-sm:0 2px 6px rgba(0,0,0,.25);
+  --shadow-md:0 4px 14px rgba(0,0,0,.35);
+  --shadow-lg:0 8px 28px rgba(0,0,0,.45);
+  --shadow-glow:0 0 18px rgba(212,175,55,.4);
+
+  /* Transiciones */
+  --trans-fast:120ms ease;
+  --trans-med:220ms ease;
+  --trans-slow:350ms cubic-bezier(.2,.8,.3,1);
+
+  /* Tamaño de carta (responsive) */
+  --cw:clamp(22px,5.5cqw,48px);
+}
+
+/* ---- 2. Reset básico ------------------------------------------------------ */
+*, *::before, *::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--black);
+  color:var(--cream);
+  font:400 14px/1.45 var(--font-base);
+  overscroll-behavior:none;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+#app{min-height:100%;display:flex;justify-content:center;align-items:flex-start;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);}
+
+/* ---- 3. Pantallas genéricas ---------------------------------------------- */
+.screen{width:100%;max-width:980px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.narrow{max-width:460px;margin:auto;justify-content:center}
+h1,h2,h3{font-family:var(--font-heading)}
+h1{font-size:clamp(24px,5vw,32px);line-height:1.2}
+h2{font-size:clamp(18px,3.5vw,24px)}
+.mut{color:var(--cream-muted)}
+.cap,small{font:600 10px var(--font-mono);letter-spacing:.08em;color:var(--cream-muted);text-transform:uppercase}
+
+/* ---- 4. Cabecera / top bar ------------------------------------------------ */
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+/* Píldora (bankroll, buy‑in, etc.) */
+.pill{
+  font:700 13px var(--font-mono);
+  padding:7px 13px;
+  border-radius:var(--radius-pill);
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  color:var(--gold-light);
+}
+
+/* ---- 5. Botones ----------------------------------------------------------- */
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+
+/* Botón primario (CTA) */
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:13px 20px;
+  border-radius:var(--radius-pill);
+  font:700 15px var(--font-heading);
+  color:#04281c;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold));
+  box-shadow:var(--shadow-md),0 0 0 1px var(--gold-dark);
+  transition:transform var(--trans-fast),box-shadow var(--trans-fast),background var(--trans-fast);
+}
+.cta:hover{background:linear-gradient(180deg,var(--gold),var(--gold-light));box-shadow:var(--shadow-lg),0 0 0 1px var(--gold-dark);transform:translateY(-1px)}
+.cta:active{transform:translateY(1px)}
+.cta:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+/* Botón ghost (secundario) */
+.ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 16px;
+  border-radius:var(--radius-pill);
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.08);
+  color:var(--cream);
+  transition:background var(--trans-fast),border-color var(--trans-fast);
+}
+.ghost:hover{background:rgba(255,255,255,.06);border-color:rgba(212,175,55,.5)}
+
+/* Inputs */
+input[type=text],#nm{
+  width:100%;
+  padding:13px 16px;
+  border-radius:var(--radius-md);
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  color:var(--cream);
+  font:500 15px var(--font-base);
+  transition:border-color var(--trans-fast),box-shadow var(--trans-fast);
+}
+input[type=text]:focus,#nm:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.2)}
+
+/* ---- 6. Avatares ---------------------------------------------------------- */
+.avs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.av{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:10px 4px;
+  border-radius:var(--radius-md);
+  background:var(--panel);
+  font-size:28px;
+  border:1px solid transparent;
+  transition:border-color var(--trans-fast),box-shadow var(--trans-fast);
+}
+.av.on,.av:focus-visible{
+  border-color:var(--gold-light);
+  box-shadow:0 0 16px rgba(212,175,55,.4);
+}
+.av small{font-size:9px;color:var(--cream-muted)}
+
+/* ---- 7. Estadísticas & lobby --------------------------------------------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{
+  background:var(--panel);
+  border-radius:var(--radius-lg);
+  padding:12px;
+  display:flex;flex-direction:column;gap:4px;
+  border:1px solid rgba(255,255,255,.04);
+}
+.stats b{font:700 22px var(--font-mono)}
+.pos{color:#00e676}
+.neg{color:var(--red-soft)}
+
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.gc{
+  background:var(--panel);
+  border-radius:var(--radius-xl);
+  padding:14px;
+  display:grid;grid-template-columns:56px 1fr;gap:12px;
+  align-items:center;
+  border:1px solid var(--panel-border);
+  transition:transform var(--trans-fast),box-shadow var(--trans-fast);
+}
+.gc:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.gc .cta{grid-column:1/-1}
+.ico{
+  width:56px;height:56px;
+  border-radius:var(--radius-md);
+  background:linear-gradient(135deg,var(--felt),var(--felt-light));
+  display:grid;place-items:center;
+  font-size:28px;
+  color:var(--gold-light);
+  box-shadow:inset 0 0 20px rgba(0,0,0,.4);
+}
+
+/* ---- 8. Mesa de juego ----------------------------------------------------- */
+.tbl{height:100dvh;max-height:1000px;display:flex;flex-direction:column}
+.info{
+  font:600 11px var(--font-mono);
+  color:var(--gold-light);
+  letter-spacing:.08em;
+  text-align:center;
+  padding:4px 0;
+}
+
+.table{
+  container-type:inline-size;
+  position:relative;
+  flex:1;
+  min-height:300px;
+  max-height:560px;
+  border-radius:44% / 40%;
+  border:8px solid #3a2a12;
+  outline:1px solid var(--panel-border);
+  background:
+    radial-gradient(ellipse at center,var(--felt-light) 0%,var(--felt) 55%,#0a2e1f 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(255,255,255,.015) 4px,
+      rgba(255,255,255,.015) 8px
+    );
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.9),
+    inset 0 0 80px rgba(0,0,0,.6),
+    inset 0 2px 0 rgba(255,255,255,.03);
+}
+
+/* Centro: bote + tablero */
+.center{
+  position:absolute;
+  left:50%;top:44%;
+  transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  pointer-events:none;
+}
+.potcap{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;
+  border-radius:var(--radius-pill);
+  background:rgba(18,23,34,.85);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--panel-border);
+  font:600 11px var(--font-mono);
+  color:var(--cream-muted);
+}
+.potcap b{color:var(--gold-light);font-size:15px;font-weight:700}
+
+.board{
+  display:flex;gap:6px;
+  min-height:calc(var(--cw)*1.4);
+  pointer-events:auto;
+}
+
+/* ---- 9. Asientos / jugadores --------------------------------------------- */
+.seat{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  width:26cqw;
+  transition:opacity .3s var(--trans-fast);
+}
+.seat.fold{opacity:.4}
+.seat .cards{display:flex;justify-content:center;min-height:calc(var(--cw)*1.4)}
+
+/* Cartas (frontal / dorso) */
+.card{
+  width:var(--cw);
+  height:calc(var(--cw)*1.4);
+  margin:0 -2px;
+  border-radius:calc(var(--cw)*.13);
+  background:#fdfcf8;
+  color:#1a1a1a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font:700 calc(var(--cw)*.42)/1 var(--font-heading);
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.7),
+    inset 0 1px 0 rgba(255,255,255,.7),
+    inset 0 -1px 0 rgba(0,0,0,.1);
+  position:relative;
+  transition:transform var(--trans-fast),box-shadow var(--trans-fast);
+}
+.card i{font-style:normal;font-size:calc(var(--cw)*.5);line-height:1}
+.card.red{color:var(--red)}
+.card.back{
+  background:
+    url('assets/cards/back.svg') center/cover no-repeat,
+    #1a0a0f;
+  border:2px solid #fdfcf8;
+}
+.card.deal{animation:deal var(--trans-slow)}
+.card.sel{
+  transform:translateY(-14px);
+  box-shadow:
+    0 0 0 2px var(--red),
+    0 8px 20px rgba(0,0,0,.8);
+}
+[data-hc]{cursor:pointer}
+
+/* Plato de info (avatar + nombre + stack) */
+.plate{
+  display:flex;gap:6px;align-items:center;
+  padding:4px 10px 4px 5px;
+  border-radius:var(--radius-pill);
+  background:rgba(18,23,34,.88);
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:var(--shadow-md);
+  max-width:100%;
+  backdrop-filter:blur(8px);
+}
+.plate .av{font-size:calc(var(--cw)*.75);width:auto;padding:0;background:none}
+.plate b{
+  display:block;
+  font-size:11px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:14cqw;
+}
+.plate em{font:600 11px var(--font-mono);color:var(--gold-light);font-style:normal}
+
+/* Estados de turno / ganador */
+.seat.turn .plate{box-shadow:0 0 18px rgba(0,230,118,.55);border-color:#00e676}
+.seat.win .plate{box-shadow:0 0 28px rgba(212,175,55,.7);border-color:var(--gold)}
+
+/* Etiqueta de acción (FOLD / CALL / RAISE) */
+.act{
+  font:700 9px var(--font-mono);
+  padding:2px 8px;
+  border-radius:var(--radius-pill);
+  background:var(--gold);
+  color:var(--black);
+  white-space:nowrap;
+}
+
+/* Botón dealer */
+.dbtn{
+  position:absolute;right:4px;top:30%;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:#e2e8f0;
+  color:var(--black);
+  font:700 10px/18px var(--font-mono);
+  text-align:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.4);
+}
+
+/* Ficha de apuesta sobre la mesa */
+.bet{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  padding:2px 9px;
+  border-radius:var(--radius-pill);
+  background:linear-gradient(180deg,var(--gold-light),var(--gold));
+  color:#0b0e14;
+  font:700 10px var(--font-mono);
+  box-shadow:0 0 0 3px rgba(0,0,0,.3),0 4px 10px rgba(0,0,0,.5);
+  animation:pop .3s var(--trans-slow);
+}
+
+/* Nombre de mano (ej. "PAREJA") */
+.hand{
+  font:700 9px var(--font-mono);
+  color:#00e676;
+  background:rgba(0,230,118,.12);
+  border-radius:var(--radius-pill);
+  padding:2px 8px;
+  white-space:nowrap;
+}
+
+/* ---- 10. Animaciones ------------------------------------------------------ */
+@keyframes deal{
+  from{transform:translate(0,-160%) rotate(-30deg) scale(.55);opacity:0}
+  to{transform:translate(0,0) rotate(0) scale(1);opacity:1}
+}
+@keyframes pop{
+  from{transform:translate(-50%,-50%) scale(.35);opacity:0}
+  to{transform:translate(-50%,-50%) scale(1);opacity:1}
+}
+
+/* ---- 11. Mensajes & consola de acción ------------------------------------ */
+.msg{
+  min-height:20px;
+  text-align:center;
+  font:700 14px var(--font-heading);
+  color:var(--gold-light);
+}
+.con{
+  background:rgba(18,23,34,.88);
+  backdrop-filter:blur(16px);
+  border-radius:var(--radius-xl);
+  padding:12px;
+  border:1px solid var(--panel-border);
+  min-height:84px;
+  display:flex;flex-direction:column;gap:10px;
+  justify-content:center;
+}
+
+/* Presets de apuesta */
+.pre{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pre button{
+  padding:7px 2px;
+  border-radius:var(--radius-md);
+  background:#0b0e14;
+  border:1px solid rgba(255,255,255,.09);
+  font:600 11px var(--font-mono);
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  color:var(--cream);
+  transition:background var(--trans-fast),border-color var(--trans-fast);
+}
+.pre button:hover{background:#1a1a1a;border-color:var(--panel-border)}
+.pre button:last-child{background:#7f1d1d}
+.pre button:last-child:hover{background:#991b1b}
+
+/* Slider de apuesta */
+.con input[type=range]{
+  width:100%;
+  accent-color:var(--gold);
+  height:6px;
+}
+
+/* Botones de acción (fold / call / raise) */
+.btns{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px}
+.btns button{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:12px 6px;
+  border-radius:var(--radius-pill);
+  font:700 15px var(--font-heading);
+  background:#272a31;
+  color:var(--cream);
+  border:1px solid transparent;
+  transition:background var(--trans-fast),border-color var(--trans-fast),transform var(--trans-fast);
+}
+.btns button:hover{transform:translateY(-1px)}
+.btns small{color:inherit;opacity:.8}
+.fold{border-color:rgba(239,68,68,.45);color:#fca5a5}
+.call{
+  background:linear-gradient(180deg,var(--gold-light),var(--gold))!important;
+  color:#0b0e14!important;
+}
+.raise{
+  background:linear-gradient(180deg,#f59e0b,#d97706)!important;
+  color:#0b0e14!important;
+}
+
+/* ---- 12. Responsive ------------------------------------------------------- */
+@media (max-width:700px){
+  .table{border-radius:36% / 30%;min-height:420px;border-width:5px}
+  .plate b{max-width:18cqw}
+  .seat{width:30cqw}
+  .pre{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ---- 13. Utilidades extra ------------------------------------------------- */
+.chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;
+  border-radius:50%;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold));
+  color:#0b0e14;
+  font:700 12px var(--font-mono);
+  box-shadow:var(--shadow-sm),inset 0 -2px 4px rgba(0,0,0,.2);
+}
+.chip.small{width:28px;height:28px;font-size:10px}
+
+/* Scrollbars finos */
+*::-webkit-scrollbar{width:8px;height:8px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:rgba(212,175,55,.35);border-radius:4px}
+*::-webkit-scrollbar-thumb:hover{background:rgba(212,175,55,.55)}
