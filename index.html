@@ -1,8 +1,52 @@
-<!doctype html>
-<html lang="es"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Royal Felt · Póker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
-</head><body><div id="app"></div><script type="module" src="js/main.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Royal Felt · Póker — App con pantallas Stitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Manrope:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--primary:#4edea3;--primary-container:#10b981;--secondary:#ffb95f;--tertiary:#00e475;--surface:#10131a;--bg:#0b0e14}
+body{background:#0b0e14;color:#e1e2eb;font-family:'Manrope',system-ui,sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif}
+</style>
+</head>
+<body class="bg-surface min-h-screen flex flex-col">
+<main class="flex-1 flex flex-col items-center justify-center p-6 gap-6 text-center">
+  <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-primary to-tertiary shadow-[0_0_30px_rgba(78,222,163,0.3)] flex items-center justify-center">
+    <span class="material-symbols-outlined text-4xl text-on-primary">playing_cards</span>
+  </div>
+  <h1 class="font-headline-lg text-3xl font-bold tracking-tight">Royal Felt · Póker</h1>
+  <p class="text-on-surface-variant max-w-md">App personal con las pantallas de diseño Stitch / EasyPoker.</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+    <a href="lobby.html" class="rounded-2xl bg-surface-container p-4 shadow-lg hover:scale-[1.02] transition text-left group">
+      <span class="material-symbols-outlined text-primary text-2xl">casino</span>
+      <h2 class="font-headline-md text-lg font-bold mt-1">Lobby / Selección</h2>
+      <p class="text-xs text-on-surface-variant">Elegir variante, ver en vivo y balance</p>
+    </a>
+    <a href="table.html" class="rounded-2xl bg-surface-container p-4 shadow-lg hover:scale-[1.02] transition text-left group">
+      <span class="material-symbols-outlined text-secondary text-2xl">table_bar</span>
+      <h2 class="font-headline-md text-lg font-bold mt-1">Mesa Activa</h2>
+      <p class="text-xs text-on-surface-variant">Texas Hold'em con bots, apuestas y timer</p>
+    </a>
+    <a href="stats.html" class="rounded-2xl bg-surface-container p-4 shadow-lg hover:scale-[1.02] transition text-left group">
+      <span class="material-symbols-outlined text-tertiary text-2xl">analytics</span>
+      <h2 class="font-headline-md text-lg font-bold mt-1">Estadísticas</h2>
+      <p class="text-xs text-on-surface-variant">Dashboard de ganancias y manos jugadas</p>
+    </a>
+    <a href="perfil.html" class="rounded-2xl bg-surface-container p-4 shadow-lg hover:scale-[1.02] transition text-left group">
+      <span class="material-symbols-outlined text-amber-400 text-2xl">badge</span>
+      <h2 class="font-headline-md text-lg font-bold mt-1">Perfil / Personalizar</h2>
+      <p class="text-xs text-on-surface-variant">Nombre, avatar y bankroll inicial</p>
+    </a>
+  </div>
+
+  <p class="text-[10px] text-on-surface-variant/60">Mazo SVG completo (52 cartas) + fichas + diseño Stitch aplicado</p>
+</main>
+<script>console.log('Royal Felt Poker App — pantallas Stitch cargadas')</script>
+</body>
+</html>

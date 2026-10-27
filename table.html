@@ -1,0 +1,462 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_stack" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#10131a;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-container": "#00422b", "on-secondary-fixed-variant": "#653e00", "on-primary-fixed": "#002113", "tertiary-fixed-dim": "#00e475", "on-tertiary-container": "#00431e", "surface-dim": "#10131a", "primary-container": "#10b981", "inverse-primary": "#006c49", "surface-container-high": "#272a31", "surface-container-low": "#191c22", "surface-container-highest": "#32353c", "inverse-surface": "#e1e2eb", "primary": "#4edea3", "error": "#ffb4ab", "on-background": "#e1e2eb", "secondary-fixed": "#ffddb8", "on-primary-fixed-variant": "#005236", "on-secondary-fixed": "#2a1700", "secondary-fixed-dim": "#ffb95f", "surface-tint": "#4edea3", "background": "#10131a", "on-surface-variant": "#bbcabf", "tertiary": "#00e475", "on-error": "#690005", "surface-container-lowest": "#0b0e14", "outline": "#86948a", "primary-fixed-dim": "#4edea3", "outline-variant": "#3c4a42", "tertiary-fixed": "#62ff96", "tertiary-container": "#00bb5f", "secondary": "#ffb95f", "on-primary": "#003824", "surface": "#10131a", "on-secondary": "#472a00", "secondary-container": "#ee9800", "surface-bright": "#363940", "inverse-on-surface": "#2e3037", "surface-variant": "#32353c", "on-surface": "#e1e2eb", "on-tertiary": "#003918", "on-tertiary-fixed": "#00210b", "surface-container": "#1d2026", "on-error-container": "#ffdad6", "primary-fixed": "#6ffbbe", "on-tertiary-fixed-variant": "#005226", "on-secondary-container": "#5b3800", "error-container": "#93000a" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "1rem", "space-xl": "2rem", "space-xs": "0.25rem", "space-lg": "1.25rem", "gutter": "1rem", "space-sm": "0.5rem", "space-md": "0.75rem" }, "fontFamily": { "body-lg": ["Manrope"], "headline-md": ["Space Grotesk"], "label-caps": ["JetBrains Mono"], "headline-sm": ["Space Grotesk"], "body-md": ["Manrope"], "body-sm": ["Manrope"], "headline-lg": ["Space Grotesk"], "metric-lg": ["JetBrains Mono"], "metric-md": ["JetBrains Mono"], "display-lg-mobile": ["Space Grotesk"], "display-lg": ["Space Grotesk"], "metric-sm": ["JetBrains Mono"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "500" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "600" }], "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "metric-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "metric-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "metric-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><button aria-label="Leave Table to Lobby" class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container-high/60 text-on-surface-variant hover:text-on-surface transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><div class="flex flex-col ml-space-xs"><span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">No Limit Hold'em</span><h1 class="font-headline-sm text-headline-sm text-on-surface leading-tight truncate max-w-[130px]">Mesa De Juego Activa</h1></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-high/80 rounded-full px-space-md py-1 shadow-inner"><span class="material-symbols-outlined text-secondary text-[16px]">monetization_on</span><span class="font-metric-sm text-metric-sm text-on-surface">$12,450</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-14 bg-surface min-h-screen"><div class="flex flex-col w-full text-on-surface select-none pb-8 overflow-hidden">
+<!-- HUD Superior de Información Rápida de Mesa -->
+<div class="w-full px-margin py-2 flex items-center justify-between bg-surface-container-lowest/90 backdrop-blur-md shadow-md">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider truncate">Mesa VIP #07 • $1/$2 NLH</span>
+</div>
+<button class="flex items-center gap-1 bg-surface-container px-space-sm py-1 rounded-full text-on-surface-variant hover:text-on-surface transition-colors shadow-sm" id="history-modal-btn">
+<span class="material-symbols-outlined text-[14px] text-secondary">history</span>
+<span class="font-label-caps text-label-caps tracking-tight">Mano #84920</span>
+</button>
+</div>
+<!-- Escenario Principal del Tapete Elíptico Royal Felt -->
+<div class="relative w-full px-margin py-3 flex flex-col items-center justify-center">
+<!-- Contenedor de la Mesa Oval con Bisel de Lujo -->
+<div class="relative w-full aspect-[4/5] max-w-md rounded-[52px] p-2 bg-gradient-to-b from-[#3a1d0f] via-[#1a0e07] to-[#0c0502] shadow-[0_22px_50px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,215,0,0.35)] flex items-center justify-center">
+<!-- Reborde Interior Dorado / Rail Acolchado -->
+<div class="w-full h-full rounded-[44px] p-1.5 bg-gradient-to-b from-secondary/40 via-secondary/10 to-secondary/30 shadow-[inset_0_3px_8px_rgba(0,0,0,0.8)] flex items-center justify-center">
+<!-- Paño Verde Esmeralda Royal Felt con Marca de Agua de Naipes -->
+<div class="relative w-full h-full rounded-[38px] bg-gradient-to-b from-[#064e3b] via-[#043327] to-[#021f17] overflow-hidden flex flex-col items-center justify-between p-3 shadow-[inset_0_0_35px_rgba(0,0,0,0.85)]">
+<!-- Marcas de Agua Decorativas del Fieltro -->
+<div class="absolute inset-0 pointer-events-none opacity-5 flex flex-wrap items-center justify-around gap-6 p-4">
+<span class="material-symbols-outlined text-4xl text-secondary">spa</span>
+<span class="material-symbols-outlined text-4xl text-secondary">diamond</span>
+<span class="material-symbols-outlined text-4xl text-secondary">favorite</span>
+<span class="material-symbols-outlined text-4xl text-secondary">local_florist</span>
+</div>
+<!-- FILA SUPERIOR: Asientos de Rival 1, Rival 2, Rival 3 -->
+<div class="w-full flex items-start justify-between relative z-10 pt-1">
+<!-- Asiento 1: El Tiburón -->
+<div class="flex flex-col items-center w-24">
+<div class="relative">
+<div class="w-11 h-11 rounded-full p-0.5 bg-surface-container-highest shadow-md overflow-hidden flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-cover bg-center flex items-center justify-center bg-surface-container-high" data-alt="Close up VIP poker avatar profile icon with reflective dark sunglasses, sharp jawline, cinematic moody casino rim lighting, emerald green ambient reflections." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgBUwORlypU5BPv9yiDGqKnDkwgZfxYtp315Nw63qldQRBWewmvjkZE-h6_6QrIBYkgO9gLX6rYuL59R8haPVZMZb6brhXakYxFfQLqSQFHIEG-dmI4P7XUTFE0qAC7IzIuaERuV_nwNO5mPxbBvMurGTqmahILBTWjHGG9OSO8sNkTsWtLXzMVDLi49wEIZl-0hkXQkR1VRNayb29Qv7gVIh-ZKjVdh0_K16D1nwjLTjFwtxQt6Rz')">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">person</span>
+</div>
+</div>
+<span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-surface-container-highest text-secondary px-1.5 py-0.2 rounded-full font-label-caps text-label-caps shadow-sm">CHECK</span>
+</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface truncate max-w-[80px] mt-1.5">El Tiburón</span>
+<span class="font-metric-sm text-metric-sm text-secondary">$1,250</span>
+</div>
+<!-- Asiento 2: La Dama (Folded) -->
+<div class="flex flex-col items-center w-24 opacity-60">
+<div class="relative">
+<div class="w-11 h-11 rounded-full p-0.5 bg-surface-container-low shadow-md overflow-hidden flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-cover bg-center flex items-center justify-center bg-surface-container-lowest" data-alt="Sophisticated woman poker player avatar with diamond choker necklace, subtle velvet gala dress, soft focused ambient high stakes lounge backdrop." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA-G8dCkYRKuTJgtO1vagMJmrbZBo-0mgW7NhKwf7-lqjXHfZHh7RL0fbOqVJZyJddf2LI7RZJ5rbW0Lz0T5J9IOybjdtx32YAhB-bRqXDuPA-kCDPw9lyMWo28OhUr1slLKJP8Nt4hId1p7LZxsUkJHqKmsmzotUUTx8QP0QeSYsrCIMx5HbB48qADg79KPD7uDOkpWnh5Y7fpmOL5q3GxVIiG1Yg1CYU-83lTfA6FBQ4QzYR8RYjp')">
+<span class="material-symbols-outlined text-outline text-[20px]">person_3</span>
+</div>
+</div>
+<span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-surface-container-lowest text-error px-1.5 py-0.2 rounded-full font-label-caps text-label-caps">FOLD</span>
+</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface-variant truncate max-w-[80px] mt-1.5">La Dama</span>
+<span class="font-metric-sm text-metric-sm text-on-surface-variant">$3,420</span>
+</div>
+<!-- Asiento 3: El Forajido (Apuesta activa de $120) -->
+<div class="flex flex-col items-center w-24">
+<div class="relative">
+<div class="w-11 h-11 rounded-full p-0.5 bg-secondary-container shadow-md overflow-hidden flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-cover bg-center flex items-center justify-center bg-surface-container-high" data-alt="Rugged high roller poker player wearing a modern luxury fedora hat with golden feather accent, dramatic dark shadow lighting, confident smirk." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9yT_eDjYTaKOi6_4gfShOjTz4IoYMRdVcJ2v78rFGpuYhvbRZ6w8U3p0ycXpNBdjv43aS0xt96Kf7caeXz8NoRZFvAGU_dytw-aWSxQ8GuMCtzhqHBKY5dPPfAJfniyvfw6uLG9EwPru-3gfVtOzOFErNo45Jpa5wL83wocGW5jiVmFktptxOgBZFg6s26bABfkGsb_6lFWKgJ7_ZrmqlAn8k3IQ8jxPAgDNUGbszjIPUaI9QT9eu')">
+<span class="material-symbols-outlined text-on-secondary-container text-[20px]">face</span>
+</div>
+</div>
+<!-- Chip Bet Badge -->
+<div class="absolute -bottom-2 -left-2 bg-secondary text-on-secondary font-metric-sm text-metric-sm px-1.5 py-0.5 rounded-full shadow-lg flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]">circle</span>
+<span class="">$120</span>
+</div>
+</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface truncate max-w-[80px] mt-2">El Forajido</span>
+<span class="font-metric-sm text-metric-sm text-secondary">$890</span>
+</div>
+</div>
+<!-- CENTRO DEL TAPETE: Bote, Fichas 3D, Botón Dealer y 5 Cartas Comunitarias -->
+<div class="relative w-full flex flex-col items-center justify-center my-auto z-10">
+<!-- Etapa de Juego y Bote Central -->
+<div class="flex items-center gap-space-sm mb-2">
+<!-- Botón Dealer -->
+<div class="w-6 h-6 rounded-full bg-surface-bright text-on-surface flex items-center justify-center font-metric-sm text-metric-sm font-bold shadow-md">
+                D
+              </div>
+<!-- Cápsula de Bote Acumulado -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-md px- space-md py-1 rounded-full flex items-center gap-1.5 shadow-lg">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">RIVER</span>
+<span class="w-1 h-1 rounded-full bg-outline"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">BOTE:</span>
+<span class="font-metric-md text-metric-md text-secondary font-bold">$480</span>
+</div>
+</div>
+<!-- Fichas Visuales Apiladas en Bote -->
+<div class="flex items-center justify-center -space-x-1.5 mb-2.5">
+<div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-[8px] font-metric-sm text-on-primary shadow-md">50</div>
+<div class="w-5 h-5 rounded-full bg-secondary flex items-center justify-center text-[8px] font-metric-sm text-on-secondary shadow-md -translate-y-1">100</div>
+<div class="w-5 h-5 rounded-full bg-tertiary flex items-center justify-center text-[8px] font-metric-sm text-on-tertiary shadow-md">100</div>
+<div class="w-5 h-5 rounded-full bg-error flex items-center justify-center text-[8px] font-metric-sm text-on-error shadow-md -translate-y-0.5">25</div>
+</div>
+<!-- BOARD / 5 CARTAS COMUNITARIAS -->
+<div class="flex items-center gap-1.5 sm:gap-2">
+<!-- Flop 1: As de Picas (A♠) -->
+<div class="w-11 h-16 bg-surface-bright rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.7)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-[#0f172a]">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-sm text-metric-sm font-bold">A</span>
+<span class="text-[10px] leading-tight">♠</span>
+</div>
+<div class="self-center">
+<span class="text-sm">♠</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-sm text-metric-sm font-bold">A</span>
+<span class="text-[10px] leading-tight">♠</span>
+</div>
+</div>
+<!-- Flop 2: Rey de Corazones (K♥) -->
+<div class="w-11 h-16 bg-surface-bright rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.7)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-error-container">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-sm text-metric-sm font-bold text-[#dc2626]">K</span>
+<span class="text-[10px] leading-tight text-[#dc2626]">♥</span>
+</div>
+<div class="self-center">
+<span class="text-sm text-[#dc2626]">♥</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-sm text-metric-sm font-bold text-[#dc2626]">K</span>
+<span class="text-[10px] leading-tight text-[#dc2626]">♥</span>
+</div>
+</div>
+<!-- Flop 3: Reina de Diamantes (Q♦) -->
+<div class="w-11 h-16 bg-surface-bright rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.7)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-[#dc2626]">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-sm text-metric-sm font-bold">Q</span>
+<span class="text-[10px] leading-tight">♦</span>
+</div>
+<div class="self-center">
+<span class="text-sm">♦</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-sm text-metric-sm font-bold">Q</span>
+<span class="text-[10px] leading-tight">♦</span>
+</div>
+</div>
+<!-- Turn: Diez de Picas (10♠) -->
+<div class="w-11 h-16 bg-surface-bright rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.7)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#f8fafc] to-[#e2e8f0] text-[#0f172a]">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-sm text-metric-sm font-bold">10</span>
+<span class="text-[10px] leading-tight">♠</span>
+</div>
+<div class="self-center">
+<span class="text-sm">♠</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-sm text-metric-sm font-bold">10</span>
+<span class="text-[10px] leading-tight">♠</span>
+</div>
+</div>
+<!-- River: Siete de Tréboles (7♣) - Resaltado con Brillo Dorado -->
+<div class="w-11 h-16 bg-surface-bright rounded-lg shadow-[0_0_12px_rgba(245,158,11,0.6)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#ffffff] to-[#fef3c7] text-[#0f172a] transform scale-105">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-sm text-metric-sm font-bold text-on-secondary-fixed">7</span>
+<span class="text-[10px] leading-tight text-on-secondary-fixed">♣</span>
+</div>
+<div class="self-center">
+<span class="text-sm text-on-secondary-fixed">♣</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-sm text-metric-sm font-bold text-on-secondary-fixed">7</span>
+<span class="text-[10px] leading-tight text-on-secondary-fixed">♣</span>
+</div>
+</div>
+</div>
+</div>
+<!-- FILA LATERAL Y ASIENTO HERO -->
+<div class="w-full flex items-end justify-between relative z-10 pb-1">
+<!-- Asiento 5 (Izquierda Media): Asiento Vacío o Reservado -->
+<div class="flex flex-col items-center w-16 opacity-40">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-outline text-[18px]">lock</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline mt-1">Vacante</span>
+</div>
+<!-- Asiento 4 (Derecha): El Maestro (Folded) -->
+<div class="flex flex-col items-center w-20 opacity-60">
+<div class="relative">
+<div class="w-10 h-10 rounded-full p-0.5 bg-surface-container-low shadow-md overflow-hidden flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-cover bg-center flex items-center justify-center bg-surface-container-high" data-alt="Elderly distinguished poker master avatar with white hair, tailored smoking jacket, deep analytical eyes in private gaming lounge." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCZUoQJRBl0oqHZ8fVawfwixwA7LtzdSj7xbrKwEopGBMzHSTq5547N34t9OXvPVzBpu_8R6_tyV0VslUmaL33t1xzdsWdpINCLv1etK9-JiyU8QLBCT60IHELmORsp6rPRx_YIN0UnY2at81jLMiN9SJM4geKKFGbi2B3kwuur4EROydR88P7unPhkMpIfo6-A4IeDqTV8SvUwUtB0EhFw3pMcLYzJ4c4StkGKdqcbnZanWajfN3is')">
+<span class="material-symbols-outlined text-outline text-[18px]">school</span>
+</div>
+</div>
+<span class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-surface-container-lowest text-error px-1 py-0.2 rounded-full font-label-caps text-label-caps">FOLD</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate max-w-[70px] mt-1.5">El Maestro</span>
+<span class="font-metric-sm text-metric-sm text-on-surface-variant">$2,100</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- NODO HERO: Alejandro 'ReyDeDiamantes' (Tú) superpuesto en la base de la mesa -->
+<div class="relative -mt-10 z-20 flex flex-col items-center w-full max-w-sm"><div class="w-full mb-2 px-2 flex flex-col items-center animate-fade-in"><div class="w-full bg-surface-container-lowest/95 backdrop-blur-xl border border-primary/30 rounded-2xl p-2.5 shadow-[0_4px_24px_rgba(0,228,117,0.25)] flex flex-col gap-1.5"><div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><div class="relative flex items-center justify-center"><div class="w-6 h-6 rounded-full bg-gradient-to-tr from-primary to-tertiary flex items-center justify-center shadow-[0_0_10px_rgba(0,228,117,0.6)]"><span class="material-symbols-outlined text-on-primary text-[15px]">psychology</span></div><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-tertiary animate-pulse"></span></div><div class="flex flex-col leading-none"><span class="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">Coach IA • Asesor Táctico</span><span class="text-[10px] text-on-surface-variant">Análisis en tiempo real</span></div></div><div class="flex items-center gap-1 bg-surface-container-high/80 px-2 py-0.5 rounded-full shadow-inner"><span class="material-symbols-outlined text-secondary text-[12px]">military_tech</span><span class="font-metric-sm text-metric-sm text-secondary font-bold">100% Imbatible</span></div></div><p class="font-body-sm text-[11px] leading-tight text-on-surface-variant bg-surface-container-low/80 p-2 rounded-xl border border-outline-variant/30"><span class="text-tertiary font-bold">¡Tienes las "Nuts" (Escalera Real al As)!</span> Ningún rival puede superarte con este board. Se sugiere <strong class="text-primary font-semibold">Subir la apuesta</strong> ($320+ o All-In) para extraer el máximo valor de El Forajido.</p><div class="flex items-center justify-between text-[10px] px-1 font-label-caps text-on-surface-variant"><span class="flex items-center gap-1 text-primary"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> EV: +$410 (Máxima Rentabilidad)</span><span class="text-secondary font-bold uppercase tracking-tight">Recomendación: SUBIR / RAISE</span></div></div></div>
+<!-- Indicador de Mejor Jugada Formada -->
+<div class="mb-1.5 bg-gradient-to-r from-primary/20 via-primary-container/80 to-primary/20 backdrop-blur-md px- space-md py-0.5 rounded-full flex items-center gap-1.5 shadow-[0_0_15px_rgba(78,222,163,0.3)]">
+<span class="material-symbols-outlined text-primary text-[14px]">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-on-primary-fixed uppercase tracking-wider font-bold">Escalera al As (Nut Straight)</span>
+</div>
+<!-- Contenedor del Avatar y Cartas Propias -->
+<div class="relative flex items-center justify-center gap-3">
+<!-- Cartas Propias (Hole Cards) con Inclinación Dinámica -->
+<div class="flex items-center -space-x-4 transition-all duration-300" id="hole-cards-wrapper">
+<!-- Carta 1: Jota de Picas (J♠) -->
+<div class="w-12 h-18 bg-surface-bright rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.8)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#ffffff] to-[#e2e8f0] text-[#0f172a] transform -rotate-6 transition-transform">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-md text-metric-md font-bold">J</span>
+<span class="text-xs leading-none">♠</span>
+</div>
+<div class="self-center">
+<span class="text-base font-bold">♠</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-md text-metric-md font-bold">J</span>
+<span class="text-xs leading-none">♠</span>
+</div>
+</div>
+<!-- Carta 2: Diez de Corazones (10♥) -->
+<div class="w-12 h-18 bg-surface-bright rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.8)] flex flex-col justify-between p-1 bg-gradient-to-b from-[#ffffff] to-[#e2e8f0] text-[#dc2626] transform rotate-6 transition-transform">
+<div class="flex flex-col items-start leading-none">
+<span class="font-metric-md text-metric-md font-bold">10</span>
+<span class="text-xs leading-none">♥</span>
+</div>
+<div class="self-center">
+<span class="text-base font-bold">♥</span>
+</div>
+<div class="flex flex-col items-end leading-none rotate-180">
+<span class="font-metric-md text-metric-md font-bold">10</span>
+<span class="text-xs leading-none">♥</span>
+</div>
+</div>
+</div>
+<!-- Avatar Hero con Halo Esmeralda y Corona VIP -->
+<div class="relative flex flex-col items-center">
+<div class="relative w-14 h-14 rounded-full p-1 bg-gradient-to-tr from-primary via-tertiary-fixed to-secondary shadow-[0_0_20px_rgba(0,228,117,0.5)]">
+<div class="w-full h-full rounded-full bg-cover bg-center flex items-center justify-center bg-surface-container-high" data-alt="Charming luxury poker player VIP icon with crisp velvet tuxedo, subtle gold lapel pin, charismatic expression under green casino spotlight." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbL7dG7XZ2PYF-bIG-qaHxc8nV7H4kk7O2BHirLnm70sLRFHCFiLyVe6Vrip6YEZYvpjAtJ7i4AHrbmfFqbmLgPEzSYnD7IsEph_WCPsOBHrMjOX7Oz8uNbc9V5jZfPzhssu2nSzci2-DrlJYuc6lX6zaV05K_1qTx4iujodduXJkF9WoGN8XoRN5Wj7KtQFDJTV98DqGlNZW8935LTCOtXbDzr5DWCBbYjHJp9bJ9iQK2NMlxW9N9')">
+<span class="material-symbols-outlined text-primary text-[24px]">shield_person</span>
+</div>
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 bg-secondary text-on-secondary w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[13px]">crown</span>
+</div>
+</div>
+<!-- Badge Tu Nombre y Stack -->
+<div class="mt-1 flex flex-col items-center bg-surface-container-lowest/90 px-space-md py-0.5 rounded-full shadow-lg">
+<span class="font-body-sm text-body-sm font-bold text-on-surface truncate max-w-[120px]">ReyDeDiamantes (Tú)</span>
+<span class="font-metric-md text-metric-md text-primary font-bold leading-tight">$10,000</span>
+</div>
+</div>
+</div>
+<!-- Barra de Tiempo de Turno (Timebank Activo: 14s) -->
+<div class="w-full max-w-[280px] mt-2 flex flex-col gap-1 items-center">
+<div class="w-full flex justify-between items-center px-1">
+<span class="font-label-caps text-label-caps text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] animate-spin">timelapse</span>
+            Tu Turno para Decidir
+          </span>
+<span class="font-metric-sm text-metric-sm text-tertiary font-bold" id="countdown-label">10s</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden shadow-inner">
+<div class="h-full bg-gradient-to-r from-tertiary via-secondary to-primary rounded-full transition-all duration-1000 ease-linear" id="timebank-bar" style="width: 50%;"></div>
+</div>
+</div>
+<!-- Botón de Privacidad: Ocultar / Mostrar Cartas -->
+<button class="mt-1.5 flex items-center gap-1 px-space-md py-0.5 rounded-full bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface-variant text-[11px] font-body-sm transition-colors" id="toggle-cards-btn">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+<span id="toggle-cards-text" class="">Ocultar Cartas</span>
+</button>
+</div>
+</div>
+<!-- PANEL DE ACCIONES TÁCTILES DE JUEGO (Thumb-Zone) -->
+<div class="w-full px-margin mt-1 flex flex-col gap-space-sm z-30">
+<!-- Presets Rápidos de Apuesta y Slider Proporcional -->
+<div class="bg-surface-container-low/90 backdrop-blur-xl p-3 rounded-2xl flex flex-col gap-2.5 shadow-xl">
+<!-- Botones de Tamaño de Bote Predefinidos -->
+<div class="grid grid-cols-4 gap-1.5">
+<button class="preset-btn py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high font-label-caps text-label-caps text-on-surface transition-all text-center" onclick="setBetAmount(4)">
+          Mín ($4)
+        </button>
+<button class="preset-btn py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high font-label-caps text-label-caps text-on-surface transition-all text-center" onclick="setBetAmount(240)">
+          1/2 Bote ($240)
+        </button>
+<button class="preset-btn py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high font-label-caps text-label-caps text-secondary font-bold transition-all text-center" onclick="setBetAmount(480)">
+          Bote ($480)
+        </button>
+<button class="preset-btn py-1.5 rounded-lg bg-error-container text-on-error-container font-label-caps text-label-caps font-bold transition-all text-center" onclick="setBetAmount(10000)">
+          All-In ($10k)
+        </button>
+</div>
+<!-- Slider Deslizante con Display Dinámico -->
+<div class="flex items-center gap-space-md px-1">
+<span class="material-symbols-outlined text-secondary text-[20px]">tune</span>
+<input class="w-full h-2 rounded-full appearance-none bg-surface-container-highest cursor-pointer accent-secondary focus:outline-none" id="bet-slider" max="10000" min="120" step="10" type="range" value="320">
+<div class="bg-surface-container-highest px-space-md py-1 rounded-lg min-w-[76px] text-right shadow-inner">
+<span class="font-metric-md text-metric-md text-secondary font-bold" id="bet-amount-display">$320</span>
+</div>
+</div>
+</div>
+<!-- TRES BOTONES PRINCIPALES DE DECISIÓN CRÍTICA -->
+<div class="grid grid-cols-3 gap-2">
+<!-- Acción 1: FOLD (Retirarse) -->
+<button class="flex flex-col items-center justify-center py-3.5 px-2 rounded-xl bg-surface-container-highest hover:bg-surface-container text-error font-headline-sm text-headline-sm font-bold shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px] mb-0.5">close</span>
+<span class="">Retirarse</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-normal">Fold</span>
+</button>
+<!-- Acción 2: CALL / CHECK (Igualar o Pasar) -->
+<button class="flex flex-col items-center justify-center py-3.5 px-2 rounded-xl bg-gradient-to-b from-surface-bright to-surface-container-high text-on-surface font-headline-sm text-headline-sm font-bold shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-secondary text-[20px] mb-0.5">check</span>
+<span class="">Igualar</span>
+<span class="font-metric-sm text-metric-sm text-secondary font-bold">$120</span>
+</button>
+<!-- Acción 3: RAISE (Subir / Apostar) Resaltado Neón Esmeralda -->
+<button class="flex flex-col items-center justify-center py-3.5 px-2 rounded-xl bg-gradient-to-b from-primary via-primary-container to-inverse-primary text-on-primary font-headline-sm text-headline-sm font-bold shadow-[0_0_20px_rgba(78,222,163,0.4)] active:scale-95 transition-transform" id="raise-btn">
+<span class="material-symbols-outlined text-[20px] mb-0.5">north_east</span>
+<span class="">Subir a</span>
+<span class="font-metric-sm text-metric-sm text-on-primary font-extrabold" id="raise-btn-label">$320</span>
+</button>
+</div>
+<!-- Atajos Rápidos y Opciones Pre-Acción -->
+<div class="flex items-center justify-between px-1 text-on-surface-variant">
+<!-- Checkbox Pre-Acción: Auto-Check / Fold -->
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 rounded bg-surface-container-highest accent-primary cursor-pointer" type="checkbox">
+<span class="font-body-sm text-body-sm">Auto Pasar / Retirarse</span>
+</label>
+<!-- Botón de Reparto Rápido o Chat -->
+<div class="flex items-center gap-space-sm">
+<button class="p-1.5 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+</button>
+<button class="p-1.5 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MODAL / DRAWER INTERACTIVO: Historial de Manos -->
+<div class="hidden fixed inset-x-0 bottom-0 z-50 p-margin bg-surface-container-lowest/95 backdrop-blur-2xl rounded-t-3xl shadow-2xl flex flex-col gap-3 max-w-lg mx-auto" id="history-drawer">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">manage_search</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Historial de Mano #84920</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="close-history-btn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-2 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="">Pre-Flop:</span>
+<span class="text-on-surface">ReyDeDiamantes sube a $12 • 3 pagan</span>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="">Flop [A♠ K♥ Q♦]:</span>
+<span class="text-on-surface">El Tiburón pasa • ReyDeDiamantes apuesta $40</span>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="">Turn [10♠]:</span>
+<span class="text-on-surface">El Forajido apuesta $120 • 2 se retiran</span>
+</div>
+<div class="flex justify-between py-1 bg-surface-container-low px-2 rounded">
+<span class="">River [7♣]:</span>
+<span class="text-primary font-bold">Acción actual en ReyDeDiamantes</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Control interactivo del slider de apuestas
+  const betSlider = document.getElementById('bet-slider');
+  const betAmountDisplay = document.getElementById('bet-amount-display');
+  const raiseBtnLabel = document.getElementById('raise-btn-label');
+
+  function updateBetDisplay(val) {
+    const formatted = '$' + Number(val).toLocaleString('en-US');
+    if (betAmountDisplay) betAmountDisplay.textContent = formatted;
+    if (raiseBtnLabel) raiseBtnLabel.textContent = formatted;
+  }
+
+  if (betSlider) {
+    betSlider.addEventListener('input', (e) => {
+      updateBetDisplay(e.target.value);
+    });
+  }
+
+  function setBetAmount(amount) {
+    if (betSlider) {
+      betSlider.value = amount;
+      updateBetDisplay(amount);
+    }
+  }
+
+  // Alternar visualización de cartas propias (Ocultar / Mostrar)
+  const toggleCardsBtn = document.getElementById('toggle-cards-btn');
+  const toggleCardsText = document.getElementById('toggle-cards-text');
+  const holeCardsWrapper = document.getElementById('hole-cards-wrapper');
+  let cardsVisible = true;
+
+  if (toggleCardsBtn && holeCardsWrapper && toggleCardsText) {
+    toggleCardsBtn.addEventListener('click', () => {
+      cardsVisible = !cardsVisible;
+      if (!cardsVisible) {
+        holeCardsWrapper.classList.add('opacity-10', 'blur-sm');
+        toggleCardsText.textContent = 'Mostrar Cartas';
+      } else {
+        holeCardsWrapper.classList.remove('opacity-10', 'blur-sm');
+        toggleCardsText.textContent = 'Ocultar Cartas';
+      }
+    });
+  }
+
+  // Microinteracción Cuenta Regresiva Timebank
+  let timeLeft = 14;
+  const countdownLabel = document.getElementById('countdown-label');
+  const timebankBar = document.getElementById('timebank-bar');
+
+  const timerInterval = setInterval(() => {
+    if (timeLeft > 0) {
+      timeLeft--;
+      if (countdownLabel) countdownLabel.textContent = timeLeft + 's';
+      if (timebankBar) {
+        const percentage = Math.max(0, (timeLeft / 20) * 100);
+        timebankBar.style.width = percentage + '%';
+        if (timeLeft <= 4) {
+          timebankBar.classList.remove('from-tertiary', 'via-secondary', 'to-primary');
+          timebankBar.classList.add('bg-error');
+        }
+      }
+    } else {
+      clearInterval(timerInterval);
+    }
+  }, 1000);
+
+  // Apertura y Cierre del Historial de Manos
+  const historyModalBtn = document.getElementById('history-modal-btn');
+  const historyDrawer = document.getElementById('history-drawer');
+  const closeHistoryBtn = document.getElementById('close-history-btn');
+
+  if (historyModalBtn && historyDrawer) {
+    historyModalBtn.addEventListener('click', () => {
+      historyDrawer.classList.remove('hidden');
+    });
+  }
+
+  if (closeHistoryBtn && historyDrawer) {
+    closeHistoryBtn.addEventListener('click', () => {
+      historyDrawer.classList.add('hidden');
+    });
+  }
+</script></main>
+
+</body></html>
