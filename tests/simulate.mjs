@@ -11,7 +11,7 @@ for(const v of Object.values(VARIANTS)){
   const P=[...Array(5)].map((_,i)=>({id:i,name:'B'+i,human:false,stack:v.buyin,style:1}));
   const g=new Game(v,P,ui);ui.g=g;const total=v.buyin*5;
   for(let h=0;h<150;h++){
-    P.forEach(p=>{if(p.stack<=0)p.stack=1});const before=P.reduce((s,p)=>s+p.stack,0);
+    const before=P.reduce((s,p)=>s+p.stack,0);
     await g.playHand();g.dealer=(g.dealer+1)%5;
     const after=P.reduce((s,p)=>s+p.stack,0);if(after!==before)throw new Error(`${v.id}: fichas ${before}→${after} en mano ${h}`);
   }

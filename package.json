@@ -2,9 +2,20 @@
   "name": "royal-felt-poker",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "main": "server.js",
   "description": "Póker personal Royal Felt (5 variantes)",
-  "scripts": { "start": "node server.js", "test": "node tests/simulate.mjs" },
-  "engines": { "node": ">=18" },
-  "dependencies": { "express": "^4.21.2" }
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/simulate.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "jsdom": "^31.0.1"
+  }
 }
