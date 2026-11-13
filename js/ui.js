@@ -21,12 +21,12 @@ export class UI{
 
   onboarding(done){
     this.root.innerHTML=`<main class="screen bare"><div class="sec-head"><span class="chip-status"><i></i>SALÓN PRIVÉ · PÓKER DE ALTA GAMA</span><h1 style="font-size:30px">Bienvenido al<br>Tapete Real</h1><p class="mut">Personaliza tu identidad antes de tomar asiento frente a los mejores jugadores de la sala.</p></div>
-    <div class="mesa-box" style="border-style:solid;border-color:rgba(255,185,95,.3)"><span class="cap">BONO EXCLUSIVO</span><b style="font:700 30px var(--m);color:var(--gold)">$10.000</b><span class="mut" style="font-size:12px">fichas gratuitas · válidas en todas las mesas</span></div>
+    <div class="mesa-box" style="border-style:solid;border-color:rgba(212,160,23,.3)"><span class="cap">BONO EXCLUSIVO</span><b style="font:700 30px var(--font-mono);color:var(--gold-primary)">$10.000</b><span class="mut" style="font-size:12px">fichas gratuitas · válidas en todas las mesas</span></div>
     <div class="field"><label for="nm">Mi nombre en mesa</label><input class="nameinput" id="nm" maxlength="16" placeholder="Ej. El Maestro" autocomplete="off"></div>
     <div class="field"><label>Elige tu máscara VIP</label><div class="avatar-grid">${AVATARS.map(([n,e],i)=>`<button class="av-cell${i?'':' on'}" data-i="${i}">${e}<small>${n}</small></button>`).join('')}</div></div>
     <button class="cta" id="go"><span class="icon" style="font-size:20px">arrow_forward</span>Continuar al Lobby</button><p class="legal">${LEGAL}</p></main>`;
     let sel=0;this.root.onclick=e=>{const b=e.target.closest('.av-cell');if(b){sel=+b.dataset.i;this.root.querySelectorAll('.av-cell').forEach(x=>x.classList.toggle('on',x===b))}
-      if(e.target.closest('#go')){const v=$('#nm').value.trim();if(v){this.root.innerHTML=`<main class="screen bare" style="text-align:center"><span class="icon" style="font-size:64px;color:var(--win)">check_circle</span><h2>Perfil configurado.<br>Entrando a la sala…</h2></main>`;setTimeout(()=>done(v,AVATARS[sel][1]),900)}}};
+      if(e.target.closest('#go')){const v=$('#nm').value.trim();if(v){this.root.innerHTML=`<main class="screen bare" style="text-align:center"><span class="icon" style="font-size:64px;color:var(--success-win)">check_circle</span><h2>Perfil configurado.<br>Entrando a la sala…</h2></main>`;setTimeout(()=>done(v,AVATARS[sel][1]),900)}}};
   }
   lobby(p,{play,reset,go}){
     this.quit=false;this.speed=1;

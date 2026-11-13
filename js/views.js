@@ -22,7 +22,7 @@ export function stats(p,go){
     <section class="panel"><h3><span class="icon">tune</span>Variantes de Juego <span class="mut" style="font-weight:400">(volumen y neto)</span></h3>
       ${rows.length?rows.sort((a,b)=>b.h-a.h).map(r=>`<div class="brow"><span class="blabel">${esc(r.name)}</span><span class="btrack"><span class="bfill${r.n<0?' negfill':''}" style="width:${Math.max(4,Math.round(Math.abs(r.n)/maxAbs*100))}%"></span></span><span class="bval ${r.n<0?'neg':'pos'}">${r.n>=0?'+':''}${money(r.n)}</span></div>`).join(''):'<p class="mut">Aún no hay manos registradas. Juega tu primera partida.</p>'}
     </section>
-    <div class="mesa-box" style="border-style:solid;border-color:rgba(78,222,163,.25)"><span class="cap">BANKROLL ACTUAL</span><b style="font:700 30px var(--m);color:var(--win)">${money(p.bank)}</b><span class="mut" style="font-size:12px">Se actualiza al instante al cambiar de fichas en la mesa</span></div>
+    <div class="mesa-box" style="border-style:solid;border-color:rgba(78,222,155,.25)"><span class="cap">BANKROLL ACTUAL</span><b style="font:700 30px var(--font-mono);color:var(--success-win)">${money(p.bank)}</b><span class="mut" style="font-size:12px">Se actualiza al instante al cambiar de fichas en la mesa</span></div>
     <p class="legal">${LEGAL}</p></main>${navHTML('stats')}`;
   $('#app').onclick=e=>{const n=e.target.closest('[data-nav]');if(n)go(n.dataset.nav)};
 }
