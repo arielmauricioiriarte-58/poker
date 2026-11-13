@@ -18,7 +18,7 @@ async function sit(id){
     const h=P[0];
     if(h.stack<=0){if(prof.bank<cfg.buyin)break;prof.bank-=cfg.buyin;h.stack=cfg.buyin} // recompra automática
     P.slice(1).forEach(b=>{if(b.stack<=0)b.stack=cfg.buyin});
-    const before=h.stack;ui.say('');await g.playHand();
+    const before=h.stack;ui.say('');ui.newHand();await g.playHand();
     st.h++;st.n+=h.stack-before;if(h.won>0)st.w++;save();
     if(left)break;await ui.waitNext();g.dealer=(g.dealer+1)%P.length;
   }

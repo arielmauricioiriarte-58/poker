@@ -15,11 +15,11 @@ export class Game{
     this.deck=makeDeck(cfg.short);this.board=[];this.pot=0;this.result=null;this.cur=0;this.turn=-1;
     P.forEach(p=>Object.assign(p,{hole:[],up:[],folded:p.stack<=0,allIn:false,bet:0,total:0,reveal:false,hand:null,act:'',won:0}));
     if(cfg.blinds){this.post(P[D(1)],cfg.blinds[0]);this.post(P[D(2)],cfg.blinds[1])}
-    else this.live.forEach(p=>this.post(p,cfg.ante));
+    else this.live.forEach(p=>{this.post(p,cfg.ante);p.bet=0}); // el ante va al bote, no cuenta como apuesta
     if(cfg.board){ // Hold'em / Omaha / Short Deck
-      P.forEach(p=>this.deal(p,cfg.hole));this.phase='Pre-flop';await ui.sync();
+      P.forEach(p=>this.deal(p,cfg.hole));if(cfg.courchevel)this.board.push(this.deck.pop());this.phase='Pre-flop';await ui.sync();
       this.cur=this.last=cfg.blinds[1];await this.street('Pre-flop',D(3),0,true);
-      for(const [k,nm] of [[3,'Flop'],[1,'Turn'],[1,'River']]){
+      for(const [k,nm] of [[cfg.courchevel?2:3,'Flop'],[1,'Turn'],[1,'River']]){
         if(this.live.length<2)break;
         this.board.push(...this.deck.splice(-k));await ui.sync();await this.street(nm,D(1),0);
       }
@@ -56,10 +56,11 @@ export class Game{
   }
   // Opciones legales para el jugador según la estructura (NL / PL / FL)
   options(p){
-    const S=this.cfg.struct,full=p.bet+p.stack,toCall=Math.min(this.cur-p.bet,p.stack);let min,max,can=full>this.cur;
+    const S=this.cfg.struct,full=p.bet+p.stack,toCall=Math.max(0,Math.min(this.cur-p.bet,p.stack));let min,max,can=full>this.cur;
     if(S==='FL'){const t=this.cur<this.limit?this.limit:this.cur+this.limit;min=max=Math.min(t,full);can=can&&this.raises<4}
     else{min=Math.min(this.cur+Math.max(this.last,this.cfg.blinds[1]),full);max=S==='NL'?full:Math.min(full,this.cur+this.pot+(this.cur-p.bet));max=Math.max(max,min)}
-    return {toCall,min,max,canRaise:can,canCheck:this.cur<=p.bet,pot:this.pot};
+    const allin=this.cfg.allin&&this.phase==='Pre-flop'; // All-In Poker: preflop solo all-in o retirarse
+    return {toCall,min,max,canRaise:can,canCheck:this.cur<=p.bet&&!allin,pot:this.pot,allin};
   }
   async round(first){
     const P=this.players,n=P.length;this.raises=0;P.forEach(p=>{if(!p.folded&&!p.allIn)p.act=''});
@@ -70,6 +71,7 @@ export class Game{
       this.turn=p.id;const o=this.options(p),before=this.cur;
       const a=p.human?await this.ui.askHuman(p,o):await this.ui.botThink(p,o);
       if(a.type==='fold'){p.folded=true;p.act='Se retiró'}
+      else if(o.allin){this.post(p,p.stack);if(p.bet>this.cur){this.last=Math.max(this.last,p.bet-this.cur);this.cur=p.bet;this.raises++}}
       else if(a.type==='raise'&&o.canRaise){
         const to=Math.max(o.min,Math.min(a.to,o.max));this.post(p,to-p.bet);
         if(p.bet>this.cur){this.last=Math.max(this.last,p.bet-this.cur);this.cur=p.bet;this.raises++}
@@ -80,20 +82,24 @@ export class Game{
       if(this.cur>before)pend=new Set(this.able.filter(q=>q!==p).map(q=>q.id));
       await this.ui.sync();
     }
-    this.turn=-1;P.forEach(p=>p.bet=0);
+    this.turn=-1;await this.ui.collect?.();P.forEach(p=>p.bet=0); // las apuestas viajan al bote
   }
-  // Showdown con botes laterales; el resto impar va al primer ganador
+  // Showdown con botes laterales; el resto impar va al primer ganador.
+  // Primero se muestran las manos y se anima el pago; luego se acreditan las fichas.
   async showdown(){
     const P=this.players,live=this.live;this.phase='Showdown';
-    if(live.length>1)live.forEach(p=>{p.reveal=true;p.hand=evaluate(this.cfg,[...p.hole,...p.up],this.board)});
-    const tot=P.filter(p=>p.total>0),levels=[...new Set(tot.map(p=>p.total))].sort((a,b)=>a-b);let prev=0;
+    if(live.length>1){live.forEach(p=>{p.reveal=true;p.hand=evaluate(this.cfg,[...p.hole,...p.up],this.board)});await this.ui.sync()}
+    const tot=P.filter(p=>p.total>0),levels=[...new Set(tot.map(p=>p.total))].sort((a,b)=>a-b),aw=new Map();let prev=0;
     for(const Lv of levels){
       const pot=tot.reduce((s,p)=>s+Math.min(p.total,Lv)-Math.min(p.total,prev),0);let el=live.filter(p=>p.total>=Lv);prev=Lv;
-      if(!el.length){const mx=Math.max(...live.map(p=>p.total));el=live.filter(p=>p.total===mx)} // dinero muerto: va al mejor activo
+      if(!el.length){const mx=Math.max(...live.map(p=>p.total));el=live.filter(p=>p.total===mx)} // dinero muerto: al mejor activo
       if(!pot)continue;
       const top=el.length>1?Math.max(...el.map(p=>p.hand.score)):0,w=el.filter(p=>el.length<2||p.hand.score===top),sh=Math.floor(pot/w.length);
-      w.forEach(x=>{x.stack+=sh;x.won+=sh});w[0].stack+=pot-sh*w.length;w[0].won+=pot-sh*w.length;
+      w.forEach(x=>aw.set(x,(aw.get(x)||0)+sh));aw.set(w[0],aw.get(w[0])+pot-sh*w.length);
     }
+    await this.ui.payout?.([...aw.keys()]);
+    for(const [p,a] of aw){p.stack+=a;p.won+=a}
+    this.pot=0;
     this.result=P.filter(p=>p.won>0).map(p=>`${p.name} gana ${money(p.won)}${p.hand?' con '+p.hand.name:''}`);
     this.turn=-1;await this.ui.sync();
   }

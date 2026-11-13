@@ -55,3 +55,30 @@ font:700 calc(var(--cw)*.42)/1 var(--d);box-shadow:0 4px 12px rgba(0,0,0,.8),ins
 .btns small{color:inherit;opacity:.8}.fold{border:1px solid rgba(239,68,68,.45);color:#fca5a5}
 .call{background:linear-gradient(#10b981,#059669)!important;color:#fff}.raise{background:linear-gradient(#f59e0b,#d97706)!important;color:#0b0e14}
 @media(max-width:700px){.table{border-radius:36% / 30%;min-height:420px;border-width:5px}.plate b{max-width:18cqw}.seat{width:30cqw}}
+
+/* ===== v2: apariencia más realista (fieltro, riel, cartas con índices, fichas 3D, avatares) ===== */
+body{background:radial-gradient(ellipse at 50% 15%,#0e3a28 0%,#07100c 70%) fixed}
+.tbl{height:auto;min-height:100dvh;max-height:none}
+.table{--chw:clamp(16px,3.4cqw,28px);min-height:520px;max-height:660px;border:11px solid #14171c;border-radius:40% / 32%;outline:0;
+background:radial-gradient(ellipse at 50% 38%,#23a05a 0%,#15703f 52%,#0b4a2a 100%);
+box-shadow:0 0 0 3px #343a44,0 0 0 6px #0b0e12,inset 0 0 70px rgba(0,0,0,.6),0 24px 60px rgba(0,0,0,.85)}
+.table::before{content:'';position:absolute;inset:14px;border-radius:inherit;border:2px dashed rgba(255,255,255,.16);pointer-events:none}
+.table::after{content:'ROYAL FELT';position:absolute;left:50%;top:62%;transform:translate(-50%,-50%);font:700 clamp(14px,4cqw,34px) var(--d);letter-spacing:.3em;color:rgba(255,255,255,.07);pointer-events:none;white-space:nowrap}
+.center{top:46%}.pile{min-height:calc(var(--chw)*1.6);display:flex;justify-content:center;align-items:flex-end}
+.card{background:linear-gradient(#fff,#eef1f5);border:1px solid #cbd5e1;display:block;font:700 calc(var(--cw)*.34)/1 var(--d)}
+.card .k{position:absolute;left:9%;top:6%;text-align:center;line-height:.95}.card .k2{left:auto;top:auto;right:9%;bottom:6%;transform:rotate(180deg)}
+.card .m{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--cw)*.62);opacity:.9}
+.card.back{background:radial-gradient(circle,#b91c1c 0 26%,transparent 27%),repeating-linear-gradient(45deg,#7f1d1d 0 3px,#991b1b 3px 6px);border:3px solid #f8fafc}
+.cards.many .card{margin:0 calc(var(--cw)*-.26)}
+.avatar{width:calc(var(--cw)*1.25);height:calc(var(--cw)*1.25);border-radius:50%;display:grid;place-items:center;font-size:calc(var(--cw)*.78);background:radial-gradient(circle at 35% 30%,#475569,#1e293b);border:2px solid #e2e8f0;box-shadow:0 6px 14px rgba(0,0,0,.6)}
+.seat.turn .avatar{border-color:var(--win);box-shadow:0 0 0 3px rgba(0,230,118,.35),0 0 22px rgba(0,230,118,.7)}
+.seat.win .avatar{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,158,11,.4),0 0 30px rgba(245,158,11,.9)}
+.plate{flex-direction:column;gap:0;padding:2px 12px;align-items:center;border-radius:12px}.plate b{max-width:22cqw}
+.stacks{display:flex;gap:2px;align-items:flex-end}.stk{position:relative;display:block;width:var(--chw)}
+.chip{position:absolute;left:0;width:var(--chw);height:calc(var(--chw)*.9);border-radius:50%;background:repeating-conic-gradient(#fff 0 12deg,var(--c) 0 45deg);box-shadow:0 2px 0 rgba(0,0,0,.55),0 3px 4px rgba(0,0,0,.5)}
+.chip::after{content:'';position:absolute;inset:22%;border-radius:50%;background:var(--c);border:1.5px dashed rgba(255,255,255,.6)}
+.bet{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;box-shadow:none;padding:0;animation:none;transition:left .5s ease,top .5s ease,opacity .45s .1s}
+.bet small{font:700 10px var(--m);background:rgba(0,0,0,.55);color:#fff;padding:1px 7px;border-radius:9px}
+.fly{z-index:6;transform:translate(-50%,-50%);transition:left .9s cubic-bezier(.5,0,.2,1),top .9s cubic-bezier(.5,0,.2,1),opacity .25s .75s}
+.fold{background:linear-gradient(#fb7a4a,#e8501f)!important;color:#fff;border:0}
+.legal{font:400 10px/1.4 var(--b);color:var(--mut);text-align:center;padding:4px 10px}
