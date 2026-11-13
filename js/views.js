@@ -85,15 +85,15 @@ export function blackjack(p,{save,go}){
   }
   function payoutApply(res){
     const delta=res==='bj'?Math.floor(st.bet*1.5):res==='win'?st.bet:res==='push'?0:-st.bet;
-    st.bank+=st.bet+delta; // devuelve apuesta + resultado neto
-    p.bank=st.bank;st.delta=delta;
+    p.bank+=st.bet+delta; // devuelve apuesta + resultado neto
+    st.delta=delta;
     const s=p.stats.blackjack??={h:0,n:0,w:0};s.h++;s.n+=delta;if(res==='win'||res==='bj')s.w++;
     save();
   }
   function finish(res){st.res=res;st.phase='done';payoutApply(res);if(res==='win'||res==='bj')win();deal(2);render()}
   function settleNow(){st.d=playDealer(st.shoe,st.d);finish(settle(st.p,st.d))}
   function dealNow(){
-    st.lastBet=st.bet;st.bank-=st.bet;p.bank=st.bank;save();
+    st.lastBet=st.bet;p.bank-=st.bet;save();
     st.shoe=shoe();st.p=[st.shoe.pop(),st.shoe.pop()];st.d=[st.shoe.pop(),st.shoe.pop()];st.res=null;
     deal(4);chipSnd(2);
     const pb=isBlackjack(st.p);
@@ -104,18 +104,18 @@ export function blackjack(p,{save,go}){
   function stand(){st.d=playDealer(st.shoe,st.d);finish(settle(st.p,st.d))}
   render();
   $('#app').onclick=e=>{
-    const add=v=>{if(st.bank>=v&&st.bet+v<=MAX_BET){st.bet+=v;render()}};
+    const add=v=>{if(p.bank>=v&&st.bet+v<=MAX_BET){st.bet+=v;render()}};
     if(e.target.closest('#bjExit')||e.target.closest('#lobby'))return go('lobby');
     const back=e.target.closest('[data-back="1"]');if(back)return go('lobby');
     const c=e.target.closest('[data-chip]');if(c)return add(+c.dataset.chip);
-    if(e.target.closest('[data-min]')){st.bet=Math.min(MIN_BET,st.bank);render();return}
+    if(e.target.closest('[data-min]')){st.bet=Math.min(MIN_BET,p.bank);render();return}
     if(e.target.closest('[data-clr]')){st.bet=0;render();return}
-    if(e.target.closest('[data-reb]')){st.bet=Math.min(st.lastBet,st.bank);render();return}
+    if(e.target.closest('[data-reb]')){st.bet=Math.min(st.lastBet,p.bank);render();return}
     if(e.target.closest('#deal'))return dealNow();
     if(e.target.closest('#hit')){st.p.push(st.shoe.pop());deal(1);if(handValue(st.p)>21)return finish('lose');if(handValue(st.p)===21)return stand();render();return}
     if(e.target.closest('#stand'))return stand();
-    if(e.target.closest('#dbl')){if(p.bank>=st.bet){st.bank-=st.bet;p.bank=st.bank;save();st.bet*=2;st.p.push(st.shoe.pop());deal(2);render();return finish(handValue(st.p)>21?'lose':settle(st.p,playDealer(st.shoe,st.d)))}return}
-    if(e.target.closest('#again')){st.phase='bet';st.bet=Math.min(st.lastBet,st.bank);if(st.bet>st.bank)st.bet=0;st.p=[];st.d=[];st.res=null;render();return}
+    if(e.target.closest('#dbl')){if(p.bank>=st.bet){p.bank-=st.bet;save();st.bet*=2;st.p.push(st.shoe.pop());deal(2);render();return finish(handValue(st.p)>21?'lose':settle(st.p,playDealer(st.shoe,st.d)))}return}
+    if(e.target.closest('#again')){st.phase='bet';st.bet=Math.min(st.lastBet,p.bank);if(st.bet>p.bank)st.bet=0;st.p=[];st.d=[];st.res=null;render();return}
   };
   // back arrow in topbar para salir al lobby
   const tb=$('.topbar .in');tb.insertAdjacentHTML('afterbegin','<button class="iconbtn" data-back="1" aria-label="Volver al Lobby"><span class="icon">arrow_back</span></button>');

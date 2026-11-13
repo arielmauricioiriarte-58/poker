@@ -8,7 +8,7 @@ export const $=s=>document.querySelector(s);
 export const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const POS=[[50,84],[10,52],[28,17],[72,17],[90,52]]; // asientos en % del tapete; 0 = jugador
 export const LEGAL='AVISO LEGAL: Los juegos de este sitio utilizan dinero ficticio. No se otorgan premios ni ganancias, ya que todos los juegos son gratuitos. Juega solo por diversión.';
-export const AVATARS=[['El Maestro','🎩'],['El Tiburón','🦈'],['La Dama','👑'],['El Forajido','🤠'],['El Titán','🦍'],['La Sombra','🥷'],['La Reina','👸'],['El Rey','🤴']];
+export const AVATARS=[['El Maestro','🎩'],['El Tiburón','🦈'],['La Dama','👑'],['El Forajido','🤠'],['El Titán','🦍'],['La Sombra','🦇'],['La Reina','👸'],['El Rey','🤴']];
 const DEN=[[1000,'#d4a017'],[500,'#7c3aed'],[100,'#1f2937'],[25,'#15803d'],[5,'#dc2626'],[1,'#e2e8f0']];
 function chipHTML(n){let out='',k=0;for(const [v,c] of DEN){const q=Math.floor(n/v);n%=v;if(!q||k>=3)continue;k++;const m=Math.min(q,6);out+=`<span class="stk" style="height:calc(var(--chw)*.9 + ${m*3}px)">${Array.from({length:m},(_,i)=>`<i class="chip" style="--c:${c};bottom:${i*3}px"></i>`).join('')}</span>`}return `<span class="stacks">${out}</span>`}
 export function navHTML(active){const t=[['lobby','casino','LOBBY'],['stats','analytics','ESTADÍSTICAS'],['perfil','person','PERFIL'],['invitar','group_add','INVITAR']];return `<nav class="bnav"><div class="in">${t.map(([id,ic,l])=>`<button class="nbitem${id===active?' on':''}" data-nav="${id}"><span class="icon">${ic}</span><span class="lbl">${l}</span></button>`).join('')}</div></nav>`}
