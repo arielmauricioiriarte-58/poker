@@ -1,17 +1,23 @@
-// Orquestación: perfil (localStorage), lobby y bucle de manos en una mesa contra 4 bots.
+// Orquestación: perfil (localStorage), lobby, stats/perfil/invitar/blackjack y el bucle de póker vs 4 bots.
 import {UI,AVATARS} from './ui.js';
 import {Game} from './engine/game.js';
 import {VARIANTS} from './engine/variants.js';
+import {stats,perfil,invitar,blackjack} from './views.js';
 const KEY='poker.profile.v1',ui=new UI(document.getElementById('app'));
 const BOTS=[['El Tiburón','🦈'],['La Dama','👑'],['El Forajido','🤠'],['El Maestro','🎩']];
 let prof=JSON.parse(localStorage.getItem(KEY)||'null');
+if(prof)prof.stats??={};
 const save=()=>localStorage.setItem(KEY,JSON.stringify(prof));
-
-function lobby(){ui.lobby(prof,{play:sit,reset(){prof.bank=10000;save();lobby()}})}
+const go=view=>view==='lobby'?lobby():view==='stats'?uiStats():view==='perfil'?uiPerfil():view==='invitar'?uiInvitar():lobby();
+function uiStats(){stats(prof,go)}
+function uiPerfil(){perfil(prof,{save,go,reset:()=>{prof.bank=10000;save();uiPerfil()}})}
+function uiInvitar(){invitar(prof,{save,go})}
+function lobby(){ui.speed=1;ui.lobby(prof,{play:sit,reset:()=>{prof.bank=10000;save();lobby()},go})}
 async function sit(id){
+  if(id==='blackjack')return blackjack(prof,{save,go});
   const cfg=VARIANTS[id];
   const buyIn=cfg.buyin;
-  // No descontar buy-in inmediatamente; se liquida al salir para evitar pérdida al cerrar pestaña
+  // El buy-in se liquida al salir, no al entrar (evita pérdida al cerrar pestaña)
   const P=[{id:0,name:prof.name,avatar:prof.avatar,human:true,stack:buyIn},
     ...BOTS.map(([name,avatar],i)=>({id:i+1,name,avatar,human:false,stack:buyIn,style:.85+Math.random()*.35}))];
   const g=new Game(cfg,P,ui),st=prof.stats[id]??={h:0,n:0,w:0};let left=false;
@@ -24,7 +30,7 @@ async function sit(id){
     st.h++;st.n+=h.stack-before;if(h.won>0)st.w++;save();
     if(left)break;await ui.waitNext();g.dealer=(g.dealer+1)%P.length;
   }
-  prof.bank+=P[0].stack-buyIn; // devolver stack menos el buy-in inicial
+  prof.bank+=P[0].stack-buyIn; // devuelve stack menos buy-in
   save();ui.speed=1;lobby();
 }
 if(prof)lobby();else ui.onboarding((name,avatar)=>{prof={name,avatar,bank:10000,stats:{}};save();lobby()});
