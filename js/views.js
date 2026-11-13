@@ -59,7 +59,7 @@ export function blackjack(p,{save,go}){
   let st={phase:'bet',bet:0,lastBet:MIN_BET,shoe:shoe(),p:[],d:[],res:null,delta:0};
   function render(){
     const pot=st.bet;
-    const cardEl=(c,hid)=>`<div class="card${hid?' back':''}" style="--cw:clamp(44px,13vw,64px)"><img alt="" src="assets/cards/${hid?'back':cardFile(c.r,c.s)}"></div>`;
+    const cardEl=(c,hid)=>`<div class="card${hid?' back':''}" style="--cw:clamp(44px,13vw,64px)"><img alt="" src="assets/cards/${hid?'back.svg':cardFile(c.r,c.s)}"></div>`;
     const pT=handValue(st.p),dT=handValue(st.d),hideHole=st.phase==='play';
     $('#app').innerHTML=`${topbarHTML('MESA VIP','Blackjack',`<span class="pill"><span class="icon">monetization_on</span>${money(p.bank)}</span>`)}
     <main class="screen">
