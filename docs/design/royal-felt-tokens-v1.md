@@ -1,5 +1,8 @@
 /* =================================================================xture
    ROYAL FELT · TAPETE REAL — DESIGN SYSTEM CSS & TAILWIND TOKENS
+   NOTA: para el bloque :root COMPLETO de DOCUMENT_2 (añade --surface-container-lowest, --felt-radial,
+   --gold-glow, sombras, radios, touch-target-min y utilidades .rf-*) ver docs/design/royal-felt-globals-doc2.md
+   ROYAL FELT · TAPETE REAL — DESIGN SYSTEM CSS & TAILWIND TOKENS
    Versión: 1.0.0
    Entorno: Salón Privé / Fichas Ficticias (100% Práctica)
    ==================================================================== */
