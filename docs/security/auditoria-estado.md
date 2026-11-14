@@ -18,7 +18,7 @@ El documento adjunto `AUDITORIA-SEGURIDAD.md` describe una rama `auditoria` (com
 |---|---|---|
 | **R-01** | Proteger `main` en GitHub + 2FA | ⬜ Usuario (config GitHub) |
 | **R-02** | Borrar rama `master` (maquetas rotas) | ⬜ Usuario (`git push origin --delete master`) |
-| **R-03** | Self-host Google Fonts / Material Symbols | ⬜ Usuario (descargar fuentes a `assets/fonts/`, cambiar CSP `font-src 'self'`) |
+| **R-03** | ~~Self-host Google Fonts / Material Symbols~~ | ✅ **Aplicado** (13/11/2026) | 4 familias bajadas a `assets/fonts/` (16 woff2 + 4 CSS reescritos con URLs relativas); `index.html` apunta a local; CSP `style-src 'self'; font-src 'self'`; sin referencias a googleapis/gstatic en HTML ni CSP. Verificado live: CSS 200 `text/css`, woff2 200 `font/woff2` |
 | **R-04** | Node 22/24 LTS en Hostinger | ⬜ Usuario (panel Hostinger) |
 
 ## Portes "vanilla" aprobados ("todos") aplicados en este proyecto
@@ -50,11 +50,14 @@ node tests/ui-smoke.mjs (5 variantes × 3 manos, jsdom)          → OK
 ## Verificación después del despliegue (curl)
 
 ```
-curl -sI  /            → CSP, nosniff, XFO DENY, Referrer, Permissions, COOP/CORP, HSTS, no-cache
+curl -sI  /            → CSP sin googleapis/gstatic: style-src 'self'; font-src 'self'; nosniff, XFO, HSTS, COOP/CORP
 curl  /server.js       → 404     curl  /package.json → 404
 curl  /tests/simulate.mjs → 404  POST /             → 405 (Allow: GET, HEAD)
 curl  /assets/favicon.svg → 200  curl  /assets/og.svg → 200
+curl  /assets/fonts/*.css  → 200 text/css;  /assets/fonts/*.woff2 → 200 font/woff2
 ```
+
+**R-03 aplicado:** fuentes self-hosted en `assets/fonts/` (Space Grotesk 600/700, Manrope 400-700, JetBrains Mono 500-700, Material Symbols Outlined variable). Sin dependencia de Google Fonts en caliente.
 
 ---
 
