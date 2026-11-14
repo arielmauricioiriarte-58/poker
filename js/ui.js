@@ -1,7 +1,7 @@
 // UI Royal Felt: personalización, lobby, mesa de póker y navegación inferior.
 // La mesa se repinta en cada sync(); las cartas nuevas llevan .deal (animación de reparto).
 import {evaluate,money,cardFile} from './engine/cards.js';
-import {VARIANTS} from './engine/variants.js';
+import {VARIANTS,RULES} from './engine/variants.js';
 import {decide} from './ai.js';
 import {deal,shuffle,chips as chipSnd,win,toggle,sound,unlock,fold as sndFold,check as sndCheck,raise as sndRaise,allin as sndAllin} from './sound.js';
 export const $=s=>document.querySelector(s);
@@ -41,6 +41,9 @@ export class UI{
       <div class="games">${games.map(v=>`<article class="gc"><div class="gc-top"><div class="gc-id"><div class="gico"><span class="icon">${v.icon&&v.icon.length<=4?v.icon:'style'}</span></div><div class="gmeta"><h2>${esc(v.name)}${v.badge?`<span class="top-badge">${v.badge}</span>`:''}</h2><p class="desc">${esc(v.desc)}</p></div></div></div>
         <div class="infobar"><div><small>${v.id==='blackjack'?'REGLAS':'CIEGAS / ANTE'}</small><b>${esc(v.info)}</b></div>${v.buyin?`<div style="text-align:right"><small>Buy-in</small><b>${money(v.buyin)}</b></div>`:`<div style="text-align:right"><small>Min. apuesta</small><b>$10</b></div>`}</div>
         <button class="gplay" data-g="${v.id}"><span class="icon">playing_cards</span>Jugar ${esc(v.name)}</button></article>`).join('')}</div>
+      <details class="panel rules"><summary><span class="icon">school</span>Reglas y ejemplos<span class="mut" style="font-weight:400"> · cartas reales del mazo</span></summary>
+        ${games.map(v=>`<div class="rule"><div class="rule-head"><span class="rule-name">${esc(v.name)}</span><span class="rule-hint">${esc(RULES[v.id].egName)}</span></div><p>${esc(RULES[v.id].txt)}</p><div class="rule-cards">${RULES[v.id].eg.map(([r,s])=>`<img src="assets/cards/${cardFile(r,s)}" alt="${r===14?'A':r===13?'K':r===12?'Q':r===11?'J':r}${({s:'♠',h:'♥',d:'♦',c:'♣'})[s]}" loading="lazy">`).join('')}</div></div>`).join('')}
+        <p class="legal">${LEGAL}</p></details>
       <button class="ghost" id="rs"><span class="icon">restart_alt</span>Restablecer bankroll a $10.000</button>
       <p class="legal">${LEGAL}</p></main>${navHTML('lobby')}`;
     this.root.onclick=e=>{const nav=e.target.closest('[data-nav]');if(nav)return go(nav.dataset.nav);
@@ -61,7 +64,9 @@ export class UI{
   say(t){const m=$('#msg');if(m)m.innerHTML=t}
   newHand(){this.seen=new Set();this.nc=0;this.prevBets=0;this.sel=new Set();if(this.speed)shuffle()}
   async sync(){this.render();await this.sleep(450)}
-  async botThink(p,o){this.render();await this.sleep(500+Math.random()*500);return decide(this.g,p,o)}
+  async botThink(p,o){this.render();await this.sleep(500+Math.random()*500);const a=decide(this.g,p,o);
+    if(a.type==='fold')sndFold();else if(a.type==='check')sndCheck();else if(a.type==='allin')sndAllin();else if(a.type==='raise'||a.type==='bet')sndRaise();else chipSnd(2);
+    return a}
   card(c,hid,cls,key,attr=''){
     const fresh=!this.seen.has(key);this.seen.add(key);if(fresh)this.nc++;
     const src=hid?'assets/cards/back.svg':`assets/cards/${cardFile(c.r,c.s)}`;
@@ -74,7 +79,7 @@ export class UI{
     const n=g.players.length,d=g.dealer,sb=(d+1)%n,bb=(d+2)%n;
     return `<div class="seat ${p.human?'hero':''} ${p.folded?'fold':''} ${g.turn===p.id?'turn':''} ${p.won?'win':''}" style="left:${x}%;top:${y}%">
       <div class="cards${p.hole.length>4?' many':''}">${p.folded&&!p.up.length?'':cs}</div>
-      <div class="avatar">${p.avatar}</div><div class="plate"><b>${esc(p.name)}</b><em>${money(p.stack)}</em></div>
+      <div class="avatar">${p.avatar}${p.human&&g.turn===p.id?'<svg class="tring" viewBox="0 0 36 36" aria-hidden="true"><circle class="tr-b" cx="18" cy="18" r="15"/><circle class="tr-f" id="tr-hero" cx="18" cy="18" r="15"/></svg>':''}</div><div class="plate"><b>${esc(p.name)}</b><em>${money(p.stack)}</em></div>
       ${p.act?`<span class="act">${p.act}</span>`:''}${p.human&&!p.folded&&p.hole.length?this.handName():''}${g.dealer===i?'<span class="dbtn">D</span>':''}${i===sb?'<span class="dbtn sb">SB</span>':''}${i===bb?'<span class="dbtn bb">BB</span>':''}</div>
       ${p.bet?`<div class="bet" style="left:${bx}%;top:${by}%">${chipHTML(p.bet)}<small>${money(p.bet)}</small></div>`:''}`;
   }
@@ -97,19 +102,23 @@ export class UI{
   askHuman(p,o){
     const g=this.g,fl=g.cfg.struct==='FL',at=v=>Math.max(o.min,Math.min(o.max,v));this.render();
     const auto=o.canCheck?{type:'check'}:{type:'fold'}; // tiempo agotado: check si es gratis, fold si no
-    let secs=15;const tid=setInterval(()=>{if(--secs<=0){clearInterval(tid);if(this.pending){const r=this.pending.res;this.pending=null;r(auto)}}},1000);
+    let secs=15;const tid=setInterval(()=>{const tr=$('#tr-hero');if(tr)tr.style.strokeDashoffset=94.2*(1-secs/15);if(--secs<=0){clearInterval(tid);if(this.pending){const r=this.pending.res;this.pending=null;r(auto)}}},1000);
     return this.hold({type:'fold'},done=>{
-      clearInterval(tid);
-      const pre=[['Mín',o.min],['½ Bote',at(g.cur+Math.round((o.pot+o.toCall)/2))],['Bote',at(g.cur+o.pot+o.toCall)],['All-In',at(p.bet+p.stack)]],con=$('#con'),sl=o.canRaise&&!fl&&o.max>o.min;
-      if(o.allin){con.innerHTML=`<p class="mut" style="text-align:center">All-In Poker: ve all-in o retírate</p><div class="btns"><button class="fold" data-a="fold">Retirarse</button><button class="raise" data-a="allin">All-In<small>${money(p.bet+p.stack)}</small></button></div>`;con.onclick=e=>{const b=e.target.closest('button');if(b){clearInterval(tid);con.innerHTML='';done({type:b.dataset.a})}};return}
-      con.innerHTML=`${sl?`<div class="pre">${pre.map(([n,v])=>`<button data-v="${v}">${n}<small>${money(v)}</small></button>`).join('')}</div><input type="range" id="sl" min="${o.min}" max="${o.max}" value="${o.min}" aria-label="Control deslizante de apuesta" aria-valuemin="${o.min}" aria-valuemax="${o.max}" aria-valuenow="${o.min}">`:''}
+      const end=a=>{clearInterval(tid);done(a)};
+      const bb=g.cfg.blinds?g.cfg.blinds[1]:0,
+        pre=[['Mín',o.min],...(bb?[['2.5BB',at(Math.round(bb*2.5))]]:[]),['½ Bote',at(g.cur+Math.round((o.pot+o.toCall)/2))],['¾ Bote',at(g.cur+Math.round((o.pot+o.toCall)*.75))],['Bote',at(g.cur+o.pot+o.toCall)],['All-In',at(p.bet+p.stack)]],
+        con=$('#con'),sl=o.canRaise&&!fl&&o.max>o.min;
+      if(o.allin){con.innerHTML=`<p class="mut" style="text-align:center">All-In Poker: ve all-in o retírate</p><div class="btns"><button class="fold" data-a="fold">Retirarse</button><button class="raise" data-a="allin">All-In<small>${money(p.bet+p.stack)}</small></button></div>`;con.onclick=e=>{const b=e.target.closest('button');if(b){end({type:b.dataset.a})}};return}
+      con.innerHTML=`${sl?`<div class="slpan" id="slpan"><div class="slpan-head"><button class="ghost sm" id="slx" aria-expanded="true"><span class="icon">tune</span>Ajustar apuesta</button></div><div class="slpan-body"><div class="pre">${pre.map(([n,v])=>`<button data-v="${v}">${n}<small>${money(v)}</small></button>`).join('')}</div><div class="bbadj">${bb?`<button data-bb="-1" aria-label="Quitar 1 big blind">−1BB</button>`:''}<input type="range" id="sl" min="${o.min}" max="${o.max}" value="${o.min}" aria-label="Control deslizante de apuesta" aria-valuemin="${o.min}" aria-valuemax="${o.max}" aria-valuenow="${o.min}">${bb?`<button data-bb="1" aria-label="Añadir 1 big blind">+1BB</button>`:''}</div></div></div>`:''}
       <div class="btns"><button class="fold" data-a="fold">Retirarse</button><button class="call" data-a="call">${o.canCheck?'Pasar':'Igualar<small>'+money(o.toCall)+'</small>'}</button>${o.canRaise?`<button class="raise" data-a="raise">${g.cur?'Subir a':'Apostar'}<small id="rv">${money(o.min)}</small></button>`:''}</div>`;
       const s=$('#sl');if(s)s.oninput=()=>{$('#rv').textContent=money(+s.value);s.setAttribute('aria-valuenow',+s.value)};
-      con.onclick=e=>{const b=e.target.closest('button');if(!b||this.disabled)return;clearInterval(tid);
+      con.onclick=e=>{const b=e.target.closest('button');if(!b||this.disabled)return;
+        if(b.id==='slx'){const pan=$('#slpan');pan.classList.toggle('closed');b.setAttribute('aria-expanded',String(!pan.classList.contains('closed')));return}
+        if(b.dataset.bb&&s){s.value=Math.max(o.min,Math.min(o.max,+s.value+bb*+b.dataset.bb));s.oninput();return}
         if(b.dataset.v){s.value=b.dataset.v;s.oninput();return}
         const a=b.dataset.a==='raise'?{type:'raise',to:s?+s.value:o.min}:{type:b.dataset.a};
         if(a.type==='fold')sndFold();else if(a.type==='check')sndCheck();else if(a.type==='allin')sndAllin();else if(a.type==='raise')sndRaise();else chipSnd(2);
-        con.innerHTML='';done(a);};
+        con.innerHTML='';end(a);};
     });
   }
   askDraw(p){

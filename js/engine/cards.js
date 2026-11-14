@@ -9,6 +9,8 @@ export function makeDeck(short){const d=[];for(const s of 'shdc')for(let r=short
 export function cardFile(r,s){const rk=({11:'J',12:'Q',13:'K',14:'A'})[r]||String(r);return `${rk}${s.toUpperCase()}.svg`}
 
 const NAMES=['Carta alta','Pareja','Doble pareja','Trío','Escalera','Color','Full House','Póker','Escalera de color'];
+// Nombres didácticos (port DOCUMENT_2 nameEs): categoría + descripción corta.
+export const nameEs=cat=>['Carta alta (ranking individual)','Pareja (dos cartas iguales)','Doble pareja','Trío (tres iguales)','Escalera (cinco consecutivas)','Color (cinco del mismo palo)','Full House (trío + pareja)','Póker (cuatro iguales)','Escalera de color'][cat];
 // Fuerza por categoría. En Short Deck el color vence al full y el trío a la escalera.
 const ORD=[0,1,2,3,4,5,6,7,8], ORD_S=[0,1,2,4,3,6,5,7,8];
 

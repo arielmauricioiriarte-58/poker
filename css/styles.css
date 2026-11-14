@@ -236,3 +236,31 @@ h1,h2,h3{font-family:var(--font-heading)}
 .rf-chip:hover{transform:translateY(-2px)}
 .rf-chip:active{transform:translateY(1px)}
 .rf-tabular-nums{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+/* Realismo: textura sutil de fieltro (Stitch: radial + ruido) */
+.table{background-image:var(--felt-radial),repeating-radial-gradient(circle at 50% 42%,rgba(255,255,255,.03) 0 2px,transparent 2px 7px),repeating-conic-gradient(from 90deg at 50% 42%,rgba(255,255,255,.018) 0 12deg,transparent 12deg 24deg)}
+.bj-felt{background-image:var(--felt-radial),repeating-radial-gradient(circle at 50% 40%,rgba(255,255,255,.03) 0 2px,transparent 2px 7px)}
+/* Panel de reglas con ejemplo de cartas */
+.rules summary{cursor:pointer;display:flex;align-items:center;gap:8px;font:700 14px var(--font-mono);color:var(--gold-primary);padding:4px 0}
+.rules summary .icon{font-size:22px}
+.rule{border-top:1px solid var(--border-subtle);padding:12px 0 14px}
+.rule:first-of-type{border-top:none;padding-top:14px}
+.rule-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.rule-name{font:700 13px var(--font-heading);color:var(--text-primary)}
+.rule-hint{font:600 9px var(--font-mono);color:var(--gold-muted);letter-spacing:.08em;text-transform:uppercase;text-align:right}
+.rule p{margin:4px 0 8px;font-size:12.5px;line-height:1.55;color:var(--text-secondary)}
+.rule-cards{display:flex;gap:8px}
+.rule-cards img{width:clamp(34px,9vw,46px);height:auto;border-radius:6px;box-shadow:var(--shadow-card)}
+/* Anillo de turno (15s) */
+.avatar{position:relative}
+.tring{position:absolute;inset:-6px;width:calc(100% + 12px);height:calc(100% + 12px);transform:rotate(-90deg);pointer-events:none}
+.tr-b{fill:none;stroke:rgba(255,255,255,.14);stroke-width:3}
+.tr-f{fill:none;stroke:var(--gold-primary);stroke-width:3;stroke-linecap:round;stroke-dasharray:94.2;stroke-dashoffset:0}
+/* Panel expandible de apuesta + ±BB */
+.slpan-head{margin:0 0 6px}
+.ghost.sm{font:700 10px var(--font-mono);letter-spacing:.1em;text-transform:uppercase}
+.slpan.closed .slpan-body{display:none}
+.bbadj{display:flex;align-items:center;gap:8px;margin-top:8px}
+.bbadj>input{flex:1;width:auto}
+.bbadj>button{flex:0 0 auto;width:44px;height:36px;border-radius:10px;border:1px solid var(--border-subtle);background:var(--surface-container-high);color:var(--gold-primary);font:700 11px var(--font-mono)}
+.bbadj>button:active{transform:scale(.92)}

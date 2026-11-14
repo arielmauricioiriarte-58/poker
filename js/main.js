@@ -5,8 +5,19 @@ import {VARIANTS} from './engine/variants.js';
 import {stats,perfil,invitar,blackjack} from './views.js';
 const KEY='poker.profile.v1',ui=new UI(document.getElementById('app'));
 const BOTS=[['El Tiburón','🦈'],['La Dama','👑'],['El Forajido','🤠'],['El Maestro','🎩']];
-let prof=JSON.parse(localStorage.getItem(KEY)||'null');
-if(prof)prof.stats??={};
+// S-02: validar todo lo que viene de localStorage (self-XSS / JSON corrupto / valores rotos)
+const AV_OK=new Set(AVATARS.map(a=>a[1]));
+function validProf(p){
+  if(!p||typeof p!=='object'||Array.isArray(p))return null;
+  const name=String(p.name??'').replace(/[\u200B-\u200D\u202A-\u202E\u2066-\u2069\uFEFF]/g,'').replace(/[\u0000-\u001F\u007F-\u009F]/g,'').trim().slice(0,16);
+  const avatar=AV_OK.has(p.avatar)?p.avatar:AVATARS[0][1];
+  const bank=Number.isFinite(+p.bank)?Math.max(0,Math.min(1e12,+p.bank)):10000;
+  const stats={};
+  if(p.stats&&typeof p.stats==='object'&&!Array.isArray(p.stats))for(const k of [...Object.keys(VARIANTS),'blackjack']){const s=p.stats[k];
+    if(s&&typeof s==='object'&&!Array.isArray(s)&&Number.isFinite(+s.h)&&Number.isFinite(+s.n)&&Number.isFinite(+s.w)&&+s.w<=+s.h)stats[k]={h:+s.h,n:+s.n,w:+s.w}}
+  return {name:name||'Ariel',avatar,bank,stats};
+}
+let prof=null;try{prof=validProf(JSON.parse(localStorage.getItem(KEY)||'null'))}catch{prof=null}
 const save=()=>localStorage.setItem(KEY,JSON.stringify(prof));
 const go=view=>view==='lobby'?lobby():view==='stats'?uiStats():view==='perfil'?uiPerfil():view==='invitar'?uiInvitar():lobby();
 function uiStats(){stats(prof,go)}
