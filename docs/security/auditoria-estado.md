@@ -17,7 +17,7 @@ El documento adjunto `AUDITORIA-SEGURIDAD.md` describe una rama `auditoria` (com
 | ID | Recomendación (requiere acción tuya) | Estado |
 |---|---|---|
 | **R-01** | Proteger `main` en GitHub + 2FA | ⬜ Usuario (config GitHub) |
-| **R-02** | Borrar rama `master` (maquetas rotas) | ⬜ Usuario (`git push origin --delete master`) |
+| **R-02** | ~~Borrar rama `master`~~ | ✅ **Aplicado** (14/11/2026) | Rama eliminada de GitHub (`git push origin --delete master`); respaldo inmutable en la tag `maqueta-master-2026-10-27` (SHA `4e38c82`) |
 | **R-03** | ~~Self-host Google Fonts / Material Symbols~~ | ✅ **Aplicado** (13/11/2026) | 4 familias bajadas a `assets/fonts/` (16 woff2 + 4 CSS reescritos con URLs relativas); `index.html` apunta a local; CSP `style-src 'self'; font-src 'self'`; sin referencias a googleapis/gstatic en HTML ni CSP. Icon font **subset a 31 ligaduras usadas** (`rlig` conservado, verificado con fontTools): `material-symbols-1.woff2` 4.025.760 B → 25.188 B (-99,4 %). Verificado live: CSS 200 `text/css`, woff2 200 `font/woff2` |
 | **R-04** | Node 22/24 LTS en Hostinger | ⬜ Usuario (panel Hostinger) |
 
@@ -61,4 +61,4 @@ curl  /assets/fonts/*.css  → 200 text/css;  /assets/fonts/*.woff2 → 200 font
 
 ---
 
-**R-02:** `git push origin --delete master` (usuario). **R-01/R-03/R-04:** acciones en paneles de Hostinger/GitHub (usuario).
+**R-02:** ✅ aplicado (master eliminada; respaldo en tag `maqueta-master-2026-10-27`). **R-01/R-04:** acciones en paneles de GitHub/Hostinger (usuario).
