@@ -10,5 +10,10 @@ function ping(t,f,dur,vol){const c=AC();if(!c||sound.muted)return;const o=c.crea
 export const deal=()=>{noise(0,.09,3200,.8,.5);noise(.03,.05,1500,1,.3)};          // "flick" de carta
 export const shuffle=()=>{for(let i=0;i<10;i++)noise(i*.055,.06,2400+Math.random()*800,.7,.25)};
 export const chips=n=>{for(let i=0;i<Math.min(n,5);i++){ping(i*.06,2300+Math.random()*900,.09,.18);ping(i*.06,3300+Math.random()*600,.06,.1)}};
+export const fold=()=>{noise(0,.26,520,.55,.3)};                                   // retirada: aire sobre fieltro
+export const check=()=>{ping(0,150,.07,.22);ping(.14,110,.07,.18)};                // dos golpes secos (check)
+export const cardFlip=()=>{ping(0,1500,.07,.2);ping(0,950,.06,.15)};               // revelación de carta
+export const raise=()=>{chips(2)};
+export const allin=()=>{chips(5)};
 export const win=()=>[523,659,784,1047].forEach((f,i)=>ping(i*.11,f,.35,.15));
 export const toggle=()=>{sound.muted=!sound.muted;localStorage.setItem('poker.mute',sound.muted?'1':'0');return sound.muted};

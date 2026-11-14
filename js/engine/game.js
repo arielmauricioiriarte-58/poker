@@ -21,7 +21,7 @@ export class Game{
       this.cur=this.last=cfg.blinds[1];await this.street('Pre-flop',D(3),0,true);
       for(const [k,nm] of [[cfg.courchevel?2:3,'Flop'],[1,'Turn'],[1,'River']]){
         if(this.live.length<2)break;
-        this.board.push(...this.deck.splice(-k));await ui.sync();await this.street(nm,D(1),0);
+        this.deck.pop();this.board.push(...this.deck.splice(-k));await ui.sync();await this.street(nm,D(1),0); // carta quemada antes de repartir
       }
     }else if(cfg.draw){ // 5-Card Draw
       P.forEach(p=>this.deal(p,5));await ui.sync();

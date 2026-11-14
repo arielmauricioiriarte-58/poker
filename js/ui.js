@@ -3,7 +3,7 @@
 import {evaluate,money,cardFile} from './engine/cards.js';
 import {VARIANTS} from './engine/variants.js';
 import {decide} from './ai.js';
-import {deal,shuffle,chips as chipSnd,win,toggle,sound,unlock} from './sound.js';
+import {deal,shuffle,chips as chipSnd,win,toggle,sound,unlock,fold as sndFold,check as sndCheck,raise as sndRaise,allin as sndAllin} from './sound.js';
 export const $=s=>document.querySelector(s);
 export const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const POS=[[50,84],[10,52],[28,17],[72,17],[90,52]]; // asientos en % del tapete; 0 = jugador
@@ -14,7 +14,7 @@ function chipHTML(n){let out='',k=0;for(const [v,c] of DEN){const q=Math.floor(n
 export function navHTML(active){const t=[['lobby','casino','LOBBY'],['stats','analytics','ESTADÍSTICAS'],['perfil','person','PERFIL'],['invitar','group_add','INVITAR']];return `<nav class="bnav"><div class="in">${t.map(([id,ic,l])=>`<button class="nbitem${id===active?' on':''}" data-nav="${id}"><span class="icon">${ic}</span><span class="lbl">${l}</span></button>`).join('')}</div></nav>`}
 export function topbarHTML(kicker,title,right=''){return `<header class="topbar"><div class="in"><div class="brand"><div class="bico"><span class="icon">token</span></div><div class="btxt"><small>${kicker}</small><b>${title}</b></div></div><div class="topright" style="display:flex;align-items:center;gap:8px">${right}</div></div></header>`}
 export class UI{
-  constructor(root){this.root=root;this.speed=1;this.quit=false;this.pending=null;this.nc=0;this.prevBets=0;this.bj=null;document.addEventListener('pointerdown',unlock)}
+  constructor(root){this.root=root;this.speed=1;this.quit=false;this.pending=null;this.nc=0;this.prevBets=0;this.bj=null;this.disabled=false;document.addEventListener('pointerdown',unlock)}
   sleep(ms){return new Promise(r=>setTimeout(r,this.speed?ms:0))}
   hold(def,setup){return new Promise(res=>{this.pending={res,def};setup(v=>{this.pending=null;res(v)})})}
   release(){if(this.pending){const p=this.pending;this.pending=null;p.res(p.def)}}
@@ -71,10 +71,11 @@ export class UI{
     const g=this.g,[x,y]=POS[i],all=p.human||p.reveal;
     const cs=p.hole.map((c,k)=>this.card(c,!all,'',`${p.id}h${k}${all?cardFile(c.r,c.s):'b'}`,p.human&&this.drawing?`data-hc="${k}"`:'').replace('class="card ',this.sel.has(k)&&p.human?'class="card sel ':'class="card ')).join('')+p.up.map(c=>this.card(c,0,'',`${p.id}u${cardFile(c.r,c.s)}`)).join('');
     const bx=x+(50-x)*.42,by=y+(40-y)*.42;
+    const n=g.players.length,d=g.dealer,sb=(d+1)%n,bb=(d+2)%n;
     return `<div class="seat ${p.human?'hero':''} ${p.folded?'fold':''} ${g.turn===p.id?'turn':''} ${p.won?'win':''}" style="left:${x}%;top:${y}%">
       <div class="cards${p.hole.length>4?' many':''}">${p.folded&&!p.up.length?'':cs}</div>
       <div class="avatar">${p.avatar}</div><div class="plate"><b>${esc(p.name)}</b><em>${money(p.stack)}</em></div>
-      ${p.act?`<span class="act">${p.act}</span>`:''}${p.human&&!p.folded&&p.hole.length?this.handName():''}${g.dealer===i?'<span class="dbtn">D</span>':''}</div>
+      ${p.act?`<span class="act">${p.act}</span>`:''}${p.human&&!p.folded&&p.hole.length?this.handName():''}${g.dealer===i?'<span class="dbtn">D</span>':''}${i===sb?'<span class="dbtn sb">SB</span>':''}${i===bb?'<span class="dbtn bb">BB</span>':''}</div>
       ${p.bet?`<div class="bet" style="left:${bx}%;top:${by}%">${chipHTML(p.bet)}<small>${money(p.bet)}</small></div>`:''}`;
   }
   handName(){const h=this.g.players[0],e=evaluate(this.g.cfg,[...h.hole,...h.up],this.g.board);return e?`<span class="hand">${e.name.toUpperCase()}</span>`:''}
@@ -95,15 +96,20 @@ export class UI{
     await this.sleep(1200)}
   askHuman(p,o){
     const g=this.g,fl=g.cfg.struct==='FL',at=v=>Math.max(o.min,Math.min(o.max,v));this.render();
+    const auto=o.canCheck?{type:'check'}:{type:'fold'}; // tiempo agotado: check si es gratis, fold si no
+    let secs=15;const tid=setInterval(()=>{if(--secs<=0){clearInterval(tid);if(this.pending){const r=this.pending.res;this.pending=null;r(auto)}}},1000);
     return this.hold({type:'fold'},done=>{
+      clearInterval(tid);
       const pre=[['Mín',o.min],['½ Bote',at(g.cur+Math.round((o.pot+o.toCall)/2))],['Bote',at(g.cur+o.pot+o.toCall)],['All-In',at(p.bet+p.stack)]],con=$('#con'),sl=o.canRaise&&!fl&&o.max>o.min;
-      if(o.allin){con.innerHTML=`<p class="mut" style="text-align:center">All-In Poker: ve all-in o retírate</p><div class="btns"><button class="fold" data-a="fold">Retirarse</button><button class="raise" data-a="allin">All-In<small>${money(p.bet+p.stack)}</small></button></div>`;con.onclick=e=>{const b=e.target.closest('button');if(b){con.innerHTML='';done({type:b.dataset.a})}};return}
-      con.innerHTML=`${sl?`<div class="pre">${pre.map(([n,v])=>`<button data-v="${v}">${n}<small>${money(v)}</small></button>`).join('')}</div><input type="range" id="sl" min="${o.min}" max="${o.max}" value="${o.min}">`:''}
+      if(o.allin){con.innerHTML=`<p class="mut" style="text-align:center">All-In Poker: ve all-in o retírate</p><div class="btns"><button class="fold" data-a="fold">Retirarse</button><button class="raise" data-a="allin">All-In<small>${money(p.bet+p.stack)}</small></button></div>`;con.onclick=e=>{const b=e.target.closest('button');if(b){clearInterval(tid);con.innerHTML='';done({type:b.dataset.a})}};return}
+      con.innerHTML=`${sl?`<div class="pre">${pre.map(([n,v])=>`<button data-v="${v}">${n}<small>${money(v)}</small></button>`).join('')}</div><input type="range" id="sl" min="${o.min}" max="${o.max}" value="${o.min}" aria-label="Control deslizante de apuesta" aria-valuemin="${o.min}" aria-valuemax="${o.max}" aria-valuenow="${o.min}">`:''}
       <div class="btns"><button class="fold" data-a="fold">Retirarse</button><button class="call" data-a="call">${o.canCheck?'Pasar':'Igualar<small>'+money(o.toCall)+'</small>'}</button>${o.canRaise?`<button class="raise" data-a="raise">${g.cur?'Subir a':'Apostar'}<small id="rv">${money(o.min)}</small></button>`:''}</div>`;
-      const s=$('#sl');if(s)s.oninput=()=>$('#rv').textContent=money(+s.value);
-      con.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+      const s=$('#sl');if(s)s.oninput=()=>{$('#rv').textContent=money(+s.value);s.setAttribute('aria-valuenow',+s.value)};
+      con.onclick=e=>{const b=e.target.closest('button');if(!b||this.disabled)return;clearInterval(tid);
         if(b.dataset.v){s.value=b.dataset.v;s.oninput();return}
-        con.innerHTML='';done(b.dataset.a==='raise'?{type:'raise',to:s?+s.value:o.min}:{type:b.dataset.a});};
+        const a=b.dataset.a==='raise'?{type:'raise',to:s?+s.value:o.min}:{type:b.dataset.a};
+        if(a.type==='fold')sndFold();else if(a.type==='check')sndCheck();else if(a.type==='allin')sndAllin();else if(a.type==='raise')sndRaise();else chipSnd(2);
+        con.innerHTML='';done(a);};
     });
   }
   askDraw(p){

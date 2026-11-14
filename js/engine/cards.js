@@ -2,7 +2,8 @@
 export const SYM={s:'♠',h:'♥',d:'♦',c:'♣'};
 export const label=r=>({11:'J',12:'Q',13:'K',14:'A'})[r]||String(r);
 export const money=n=>(n<0?'-':'')+'$'+(Math.abs(n)>=1e4?(Math.abs(n)/1e3).toFixed(1)+'K':Math.abs(n).toLocaleString('es-AR'));
-export function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const rnd=()=>{if(typeof crypto!=='undefined'&&crypto.getRandomValues){const u=new Uint32Array(1);while(!u[0])crypto.getRandomValues(u);return u[0]/4294967296}return Math.random()};
+export function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 export function makeDeck(short){const d=[];for(const s of 'shdc')for(let r=short?6:2;r<15;r++)d.push({r,s});return shuffle(d)}
 // Mapeo de cartas a sus archivos SVG (mazo en assets/cards/)
 export function cardFile(r,s){const rk=({11:'J',12:'Q',13:'K',14:'A'})[r]||String(r);return `${rk}${s.toUpperCase()}.svg`}
